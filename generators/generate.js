@@ -12,7 +12,7 @@
 'use strict';
 
 var fs         = require( 'fs' ),
-	async      = require( './async' ),
+	async      = require( 'async' ),
 	LineReader = require( './linereader' ).LineReader;
 
 var files = {
