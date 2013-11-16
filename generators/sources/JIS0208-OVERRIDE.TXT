@@ -1,0 +1,11 @@
+#
+# JIS To UNICODE Convert Problem
+# This problem caused to JIS0208.TXT and Windows31-j Mapping differences.
+#
+# http://www8.plala.or.jp/tkubota1/unicode-symbols-map2.html
+# http://www.mail-archive.com/unicode@unicode.org/msg05222.html
+#
+
+0x2140	0xFF3C	# FULLWIDTH REVERSE SOLIDUS
+0x2142	0x2225	# PARALLEL TO
+0x215D	0xFF0D	# FULLWIDTH HYPHEN-MINUS

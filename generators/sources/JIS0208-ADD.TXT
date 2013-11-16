@@ -1,0 +1,14 @@
+#
+# UNICODE To JIS Convert Problem
+# This problem caused to Windows-31J Mapping differences.
+#
+# http://www8.plala.or.jp/tkubota1/unicode-symbols-map2.html
+#
+# JIS <-> UNICODE
+#
+
+0x2140	U+FF3C	# FULLWIDTH REVERSE SOLIDUS
+0x2141	U+FF5E	# FULLWIDTH TILDE
+0x2171	U+FFE0	# FULLWIDTH CENT SIGN
+0x2172	U+FFE1	# FULLWIDTH POUND SIGN
+0x224C	U+FFE2	# FULLWIDTH NOT SIGN

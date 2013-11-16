@@ -1,0 +1,13 @@
+{
+	"name": "jconv",
+	"description": "Iconv for Japanese characters.",
+	"version": "0.0.1",
+	"main": "jconv.js",
+	"engines": {
+		"node": ">=0.8.0"
+	},
+	"devDependencies": {
+		"async": "latest",
+		"iconv": "latest"
+	}
+}

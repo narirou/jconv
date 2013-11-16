@@ -1,0 +1,79 @@
+<!doctype html>
+<html>
+	<head>
+		<title>Jconv Speed Test</title>
+		<script src="./Chart.min.js"></script>
+		<script src="./speedLog.js"></script>
+		<meta name = "viewport" content = "initial-scale = 1, user-scalable = no">
+		<style type="text/css">
+			canvas {
+				margin-top: 30px;
+			}
+		</style>
+	</head>
+	<body>
+		<canvas id="canvas" height="450" width="1200"></canvas>
+	<script>
+		var logs = JSON.parse( speedLog );
+		var logLabels = [];
+		var logJconv = [];
+		var logIconv = [];
+
+		for( var key in logs ) {
+			var log = logs[ key ];
+
+			logJconv.push( log[ 'jconv' ] );
+			logIconv.push( log[ 'iconv' ] );
+			logLabels.push( key.replace( /\[ (.+) \]/, '$1' ) );
+		}
+
+		var chartData = {
+			labels : logLabels,
+			datasets : [
+				{
+					fillColor : 'rgba(220,220,220,0.5)',
+					strokeColor : 'rgba(220,220,220,0.8)',
+					data : logIconv
+				},
+				{
+					fillColor : 'rgba(123,185,191,0.5)',
+					strokeColor : 'rgba(123,185,191,0.8)',
+					data : logJconv
+				}
+			]
+		};
+
+		var chartOption = {
+			scaleOverlay : false,
+			scaleOverride : true,
+			scaleSteps : 10,
+			scaleStepWidth : 80,
+			scaleStartValue : 0,
+			scaleLineColor : 'rgba(0,0,0,.1)',
+			scaleLineWidth : 1,
+			scaleShowLabels : true,
+			scaleLabel : '<%=value%>ms',
+			scaleFontFamily : 'Arial',
+			scaleFontSize : 12,
+			scaleFontStyle : 'normal',
+			// scaleFontColor : '#fff',
+			scaleShowGridLines : true,
+			// scaleGridLineColor : '#000',
+			scaleGridLineWidth : 1,
+			barShowStroke : true,
+			barStrokeWidth : 1,
+			barValueSpacing : 15,
+			barDatasetSpacing : 3,
+			animation : true,
+			animationSteps : 60,
+			animationEasing : 'easeOutQuart',
+			onAnimationComplete : null
+		};
+
+		var ctx = document.getElementById( 'canvas' ).getContext( '2d' );
+
+		var chart = new Chart( ctx ).Bar( chartData, chartOption );
+
+	</script>
+	</body>
+</html>
