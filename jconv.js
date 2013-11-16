@@ -29,15 +29,15 @@ var Encoding = function( obj ) {
 	this.convert = obj.convert;
 };
 
-var jconv = module.exports = function( buf, to, from ) {
-	return jconv.convert( buf, to, from );
+var jconv = module.exports = function( buf, from, to ) {
+	return jconv.convert( buf, from, to );
 };
 
 jconv.defineEncoding = function( obj ) {
 	encodings[ obj.name ] = new Encoding( obj );
 };
 
-jconv.convert = function( buf, to, from ) {
+jconv.convert = function( buf, from, to ) {
 	if( ! to ) {
 		throw new Error( 'Encoding not recognized.' );
 	}

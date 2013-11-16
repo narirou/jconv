@@ -38,7 +38,7 @@ function speedTest( from, to ) {
 		.add({
 			name: 'jconv',
 			func: function() {
-				_jconv.convert( buffer, TO, FROM );
+				_jconv.convert( buffer, FROM, TO );
 			}
 		})
 		.add({

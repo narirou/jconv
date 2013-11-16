@@ -11,7 +11,7 @@ function convertTest( from, to ) {
 
 	var buffer = fs.readFileSync( './input/' + from + '.txt' );
 
-	var converted = jconv.convert( buffer, TO, FROM );
+	var converted = jconv.convert( buffer, FROM, TO );
 
 	fs.writeFileSync( './output/' + from + '-' + to + '.txt', converted );
 
