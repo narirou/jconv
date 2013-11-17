@@ -1,14 +1,27 @@
 {
 	"name": "jconv",
-	"description": "Iconv for Japanese characters.",
+	"description": "Iconv.js for Japanese characters.",
 	"version": "0.0.1",
+	"auther": "narirou <narirou.github@gmail.com>",
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/narirou/jconv.git"
+	},
 	"main": "jconv.js",
 	"engines": {
 		"node": ">=0.8.0"
 	},
+	"keywords": [
+		"iconv",
+		"encode",
+		"encoding",
+		"charset",
+		"japanese"
+	],
 	"devDependencies": {
 		"async": "latest",
 		"iconv": "latest",
 		"benchmark": "latest"
-	}
+	},
+	"license": "MIT"
 }
