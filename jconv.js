@@ -173,7 +173,7 @@ jconv.defineEncoding({
 			}
 			// HALFWIDTH_KATAKANA
 			else if( 0xFF61 <= unicode && unicode <= 0xFF9F ) {
-				sjisBuf[ offset++ ] = unicode　- 0xFEC0;
+				sjisBuf[ offset++ ] = unicode - 0xFEC0;
 			}
 			// KANJI
 			else {
