@@ -12,6 +12,7 @@ var buffers = {
 };
 
 var logs = {};
+var logText = '';
 
 function speedTest( from, to ) {
 	var FROM    = from.toUpperCase(),
@@ -31,10 +32,9 @@ function speedTest( from, to ) {
 	var buffer  = buffers[ FROM ];
 	var title   = '[ ' + FROM + ' -> ' + TO + ' ]';
 
-	console.log( title );
+	log( title );
 
 	var suite = new Benchmark.Suite;
-
 	suite
 		.add( 'jconv', function() {
 			_jconv.convert( buffer, FROM, TO );
@@ -43,29 +43,35 @@ function speedTest( from, to ) {
 			_iconv.convert( buffer );
 		})
 		.on( 'cycle', function( event ) {
-			console.log( String( event.target ) );
+			log( String( event.target ) );
 		})
 		.on( 'complete', function() {
+			var text = 'Fastest is ' + this.filter( 'fastest' ).pluck( 'name' );
 			var results = this.filter( 'successful' );
-			var log = {};
+			var logData = {};
 
 			for( var i = 0, len = results.length; i < len; i++ ) {
 				var result = results[ i ];
-				log[ result.name ] = result.hz;
+				logData[ result.name ] = result.hz;
 			}
+			logs[ title ] = logData;
 
-			logs[ title ] = log;
-
-			console.log( 'Fastest is %s', this.filter( 'fastest' ).pluck( 'name' ) );
+			log( text );
 		})
 		.run({
 			async: false
 		});
 }
 
+function log( text ) {
+	logText += text + '\n';
+	console.log( text );
+}
+
 function writeLog() {
 	var outputString = 'var speedLog = \'' + JSON.stringify( logs ) + '\';';
 	fs.writeFileSync( './chart/speedLog.js', outputString );
+	fs.writeFileSync( './chart/speedLog.txt', logText );
 }
 
 speedTest( 'UTF8', 'SJIS' );
