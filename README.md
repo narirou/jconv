@@ -50,7 +50,7 @@ Environment is Windows7, core i5 2405-S, mem8G, Node 0.10.22.
 (Please check on your hardware.)  
 `Gray` is iconv and `Blue` is jconv.  
 
-![jconv - encoding speed test chart](https://dl-web.dropbox.com/get/Public/speedLog.png?w=AABFHiEysNe2M2DhrKqAUEMU-QziEaIMvUu1SDmaJtGeKQ)
+![jconv - encoding speed test chart](https://dl.dropboxusercontent.com/s/rz14axy7ie96o71/speedLog.png?dl=1&token_hash=AAH0Cmp7uzDES2aj9VtQaYI1rKDxcLhqs5YbBY0ZKF0ksw)
 [[log]](https://raw.github.com/narirou/jconv/master/test/chart/speedLog.txt)  
 
 ### Encodings
