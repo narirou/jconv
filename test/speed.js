@@ -1,5 +1,5 @@
 var fs        = require( 'fs' ),
-	stopwatch = require( './stopwatch' );
+	Benchmark = require( 'benchmark' );
 
 var jconv     = require( '../jconv.min' ),
 	Iconv     = require( 'iconv' ).Iconv;
@@ -33,26 +33,34 @@ function speedTest( from, to ) {
 
 	console.log( title );
 
-	stopwatch
-		.reset()
-		.add({
-			name: 'jconv',
-			func: function() {
-				_jconv.convert( buffer, FROM, TO );
-			}
+	var suite = new Benchmark.Suite;
+
+	suite
+		.add( 'jconv', function() {
+			_jconv.convert( buffer, FROM, TO );
 		})
-		.add({
-			name: 'iconv',
-			func: function() {
-				_iconv.convert( buffer );
+		.add( 'iconv', function() {
+			_iconv.convert( buffer );
+		})
+		.on( 'cycle', function( event ) {
+			console.log( String( event.target ) );
+		})
+		.on( 'complete', function() {
+			var results = this.filter( 'successful' );
+			var log = {};
+
+			for( var i = 0, len = results.length; i < len; i++ ) {
+				var result = results[ i ];
+				log[ result.name ] = result.hz;
 			}
+
+			logs[ title ] = log;
+
+			console.log( 'Fastest is %s', this.filter( 'fastest' ).pluck( 'name' ) );
+		})
+		.run({
+			async: false
 		});
-
-	stopwatch
-		.run( 100 )
-		.show();
-
-	logs[ title ] = stopwatch.results;
 }
 
 function writeLog() {

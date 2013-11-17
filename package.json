@@ -8,6 +8,7 @@
 	},
 	"devDependencies": {
 		"async": "latest",
-		"iconv": "latest"
+		"iconv": "latest",
+		"benchmark": "latest"
 	}
 }

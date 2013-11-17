@@ -52,13 +52,12 @@
 			scaleLineColor : 'rgba(0,0,0,.1)',
 			scaleLineWidth : 1,
 			scaleShowLabels : true,
-			scaleLabel : '<%=value%>ms',
+			scaleLabel : '<%=value%> ops/sec',
 			scaleFontFamily : 'Arial',
 			scaleFontSize : 12,
 			scaleFontStyle : 'normal',
-			// scaleFontColor : '#fff',
+			scaleFontColor : '#333',
 			scaleShowGridLines : true,
-			// scaleGridLineColor : '#000',
 			scaleGridLineWidth : 1,
 			barShowStroke : true,
 			barStrokeWidth : 1,
@@ -73,7 +72,6 @@
 		var ctx = document.getElementById( 'canvas' ).getContext( '2d' );
 
 		var chart = new Chart( ctx ).Bar( chartData, chartOption );
-
 	</script>
 	</body>
 </html>

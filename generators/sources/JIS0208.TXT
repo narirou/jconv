@@ -5,12 +5,10 @@
 # http://www8.plala.or.jp/tkubota1/unicode-symbols-map2.html
 # http://www.mail-archive.com/unicode@unicode.org/msg05222.html
 #
-# Moddified at line 116
+# Moddified:
 # REVERSE SOLIDUS -> FULLWIDTH REVERSE SOLIDUS
-#
-# Moddified at line 200
 # DOUBLE VERTICAL LINE -> PARALLEL TO
-#
+# MINUS SIGN -> FULLWIDTH HYPHEN-MINUS
 
 #
 #	Name:             JIS X 0208 (1990) to Unicode
