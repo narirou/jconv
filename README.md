@@ -2,8 +2,9 @@ jconv
 ====================
 > Iconv.js for Japanese characters.
 
+ * This module supported the encoding commonly used in japanese:  
+   *Shift_JIS(CP932), ISO-2022-JP(-1), EUC-JP, UTF8* conversion.
  * Pure Javascript, no compile needed.
- * Spported: Shift_JIS(CP932), ISO-2022-JP(-1), EUC-JP, UTF8 conversion.
  * Almost much faster than node-iconv.
 
 ### Install
@@ -12,7 +13,7 @@ npm install jconv
 ```
 
 ### Usage
-Example, simply convert **EUC-JP** to **Shift_JIS** :
+An example simply convert **EUC-JP** to **Shift_JIS** :
 
 ```javascript
 var jconv = require( 'jconv' );
@@ -30,10 +31,10 @@ var buffer = jconv.encode( string, toEncoding );
 
 ### API
 
-* #####`jconv( input, from, to )`
-* #####`jconv.convert( input, from, to )`  
+* **jconv( input, from, to )**  
+* **jconv.convert( input, from, to )**  
 `input` is {Buffer} or {String}.  
-`from`, `to` are {String}: *Shift_JIS(SJIS), SO-2022-JP(JIS), EUCJP, UTF8* are available.  
+`from`, `to` are {String}: *Shift_JIS(SJIS), ISO-2022-JP(JIS), EUCJP, UTF8* are available.  
 `return` value is {Buffer}.
 
 <!-- * #####`jconv.decode( inputBuffer, from )`
@@ -44,14 +45,13 @@ var buffer = jconv.encode( string, toEncoding );
 
 ### Speed
 Comparison with node-iconv@ 2.0.7 by converting ["Kokoro by NatsumeSoseki(夏目 漱石)"](http://www.aozora.gr.jp/cards/000148/files/773_14560.html)
-using Benchmark.js.  
+using [Benchmark.js](https://github.com/bestiejs/benchmark.js).  
 Environment is Windows7, core i5 2405-S, mem8G, Node 0.10.22.
 (Please check on your hardware.)  
 `Gray` is iconv and `Blue` is jconv.  
 
-![jconv - encoding speed test chart](https://dl-web.dropbox.com/get/Public/speedLog.png?w=AABFHiEysNe2M2DhrKqAUEMU-QziEaIMvUu1SDmaJtGeKQ)  
-
-[[log]]()  
+![jconv - encoding speed test chart](https://dl-web.dropbox.com/get/Public/speedLog.png?w=AABFHiEysNe2M2DhrKqAUEMU-QziEaIMvUu1SDmaJtGeKQ)
+[[log]](https://raw.github.com/narirou/jconv/master/test/chart/speedLog.txt)  
 
 ### Encodings
  * Supported Windows Dependent Characters <-> JIS Conversion.  
