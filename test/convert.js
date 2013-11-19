@@ -1,7 +1,7 @@
 var fs    = require( 'fs' ),
 	jconv = require( __dirname + '/../' );
 
-var inputPath  = __dirname + '/input/ALL/',
+var inputPath  = __dirname + '/input/all/',
 	outputPath = __dirname + '/output/';
 
 function convertTest( from, to ) {

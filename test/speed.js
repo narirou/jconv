@@ -1,41 +1,40 @@
 var fs        = require( 'fs' ),
-	Benchmark = require( 'benchmark' );
-
-var jconv     = require( '../jconv.min' ),
+	Benchmark = require( 'benchmark' ),
+	jconv     = require( __dirname + '/../jconv.min' ),
 	Iconv     = require( 'iconv' ).Iconv;
 
+var inputPath  = __dirname + '/input/KOKORO/',
+	chartPath  = __dirname + '/chart/';
+
 var buffers = {
-	'SJIS' : fs.readFileSync( './input/kokoro-sjis.txt' ),
-	'UTF8' : fs.readFileSync( './input/kokoro-utf8.txt' ),
-	'JIS'  : fs.readFileSync( './input/kokoro-jis.txt' ),
-	'EUCJP': fs.readFileSync( './input/kokoro-eucjp.txt' ),
+	'SJIS' : fs.readFileSync( inputPath + '/sjis.txt' ),
+	'UTF8' : fs.readFileSync( inputPath + '/utf8.txt' ),
+	'JIS'  : fs.readFileSync( inputPath + '/jis.txt' ),
+	'EUCJP': fs.readFileSync( inputPath + '/eucjp.txt' ),
 };
 
 var logs = {};
+
 var logText = '';
 
 function speedTest( from, to ) {
 	var FROM    = from.toUpperCase(),
 		TO      = to.toUpperCase(),
 		from    = from.toLowerCase(),
-		to      = to.toLowerCase();
-
-	var fixFROM = ( FROM === 'JIS'  ) ? 'ISO-2022-JP-1' :
-	              ( FROM === 'SJIS' ) ? 'CP932' : FROM;
-
-	var fixTO   = ( TO === 'JIS'  ) ? 'ISO-2022-JP-1' :
+		to      = to.toLowerCase(),
+		fixFROM = ( FROM === 'JIS'  ) ? 'ISO-2022-JP-1' :
+	              ( FROM === 'SJIS' ) ? 'CP932' : FROM,
+	    fixTO   = ( TO === 'JIS'  ) ? 'ISO-2022-JP-1' :
 	              ( TO === 'SJIS' ) ? 'CP932' : TO;
 
 	var _jconv  = jconv;
 	var _iconv  = new Iconv( fixFROM, fixTO + '//TRANSLIT//IGNORE' );
-
 	var buffer  = buffers[ FROM ];
 	var title   = '[ ' + FROM + ' -> ' + TO + ' ]';
 
 	log( title );
 
-	var suite = new Benchmark.Suite;
-	suite
+	new Benchmark.Suite
 		.add( 'jconv', function() {
 			_jconv.convert( buffer, FROM, TO );
 		})
@@ -70,8 +69,8 @@ function log( text ) {
 
 function writeLog() {
 	var outputString = 'var speedLog = \'' + JSON.stringify( logs ) + '\';';
-	fs.writeFileSync( './chart/speedLog.js', outputString );
-	fs.writeFileSync( './chart/speedLog.txt', logText );
+	fs.writeFileSync( chartPath + 'speedLog.js', outputString );
+	fs.writeFileSync( chartPath + 'speedLog.txt', logText );
 }
 
 speedTest( 'UTF8', 'SJIS' );
