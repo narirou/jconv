@@ -61,6 +61,15 @@ jconv.convert = function( buf, from, to ) {
 	}
 };
 
+jconv.decode = function( buf, from ) {
+	var utf8Buf = jconv.convert( buf, from, 'UTF8' );
+	return utf8Buf.toString( 'utf-8' );
+};
+
+jconv.encode = function( str, to ) {
+	return jconv.convert( str, 'UTF8', to );
+};
+
 function getName( name ) {
 	if( ! name ) return 'UTF8';
 	switch( name.toUpperCase() ) {
@@ -199,7 +208,7 @@ jconv.defineEncoding({
 			codeBuf  = new Buffer( len * 3 + 3 ),
 			offset   = 0,
 			unicode,
-			sequence;
+			sequence = 0;
 
 		for( var i = 0; i < len; ) {
 			var buf1 = buf[ i++ ];
@@ -301,9 +310,9 @@ jconv.defineEncoding({
 		var tableJisInv    = tables[ 'JISInverted' ],
 			tableJisExtInv = tables[ 'JISEXTInverted' ];
 
-		var len      = buf.length,
-			codeBuf  = new Buffer( len * 2 ),
-			offset   = 0,
+		var len     = buf.length,
+			codeBuf = new Buffer( len * 2 ),
+			offset  = 0,
 			unicode,
 			sequence;
 
@@ -369,9 +378,9 @@ jconv.defineEncoding({
 		var tableSjis = tables[ 'SJIS' ],
 			toUtf8Buf = toUtf8Buffer;
 
-		var len       = buf.length,
-			utf8Buf   = new Buffer( len * 2 ),
-			offset    = 0,
+		var len     = buf.length,
+			utf8Buf = new Buffer( len * 3 ),
+			offset  = 0,
 			unicode;
 
 		for( var i = 0; i < len; ) {
@@ -404,10 +413,10 @@ jconv.defineEncoding({
 		var tableSjis   = tables[ 'SJIS' ],
 			tableJisInv = tables[ 'JISInverted' ];
 
-		var len         = buf.length,
-			codeBuf     = new Buffer( len * 3 + 3 ),
-			offset      = 0,
-			sequence;
+		var len      = buf.length,
+			codeBuf  = new Buffer( len * 3 + 3 ),
+			offset   = 0,
+			sequence = 0;
 
 		for( var i = 0; i < len; ) {
 			var buf1 = buf[ i++ ];
@@ -504,9 +513,9 @@ jconv.defineEncoding({
 		var tableSjis   = tables[ 'SJIS' ],
 			tableJisInv = tables[ 'JISInverted' ];
 
-		var len         = buf.length,
-			codeBuf     = new Buffer( len * 2 ),
-			offset      = 0;
+		var len     = buf.length,
+			codeBuf = new Buffer( len * 2 ),
+			offset  = 0;
 
 		for( var i = 0; i < len; ) {
 			var buf1 = buf[ i++ ];
@@ -641,10 +650,10 @@ jconv.defineEncoding({
 
 	convert: function( buf ) {
 
-		var len       = buf.length,
-			codeBuf   = new Buffer( len * 2 ),
-			offset    = 0,
-			sequence  = 0;
+		var len      = buf.length,
+			codeBuf  = new Buffer( len * 2 ),
+			offset   = 0,
+			sequence = 0;
 
 		for( var i = 0; i < len; ) {
 			var buf1 = buf[ i++ ];
@@ -732,10 +741,10 @@ jconv.defineEncoding({
 	name: 'JIStoEUCJP',
 
 	convert: function( buf ) {
-		var len       = buf.length,
-			codeBuf   = new Buffer( len * 2 ),
-			offset    = 0,
-			sequence  = 0;
+		var len      = buf.length,
+			codeBuf  = new Buffer( len * 2 ),
+			offset   = 0,
+			sequence = 0;
 
 		for( var i = 0; i < len; ) {
 			var buf1 = buf[ i++ ];
@@ -802,9 +811,9 @@ jconv.defineEncoding({
 			tableJisExt = tables[ 'JISEXT' ],
 			toUtf8Buf   = toUtf8Buffer;
 
-		var len         = buf.length,
-			utf8Buf     = new Buffer( len * 2 ),
-			offset      = 0,
+		var len     = buf.length,
+			utf8Buf = new Buffer( len * 2 ),
+			offset  = 0,
 			unicode;
 
 		for( var i = 0; i < len; ) {
@@ -844,9 +853,9 @@ jconv.defineEncoding({
 	unknown: tables[ 'SJISInverted' ][ unknown2 ],
 
 	convert: function( buf ) {
-		var len         = buf.length,
-			codeBuf     = new Buffer( len * 2 ),
-			offset      = 0,
+		var len     = buf.length,
+			codeBuf = new Buffer( len * 2 ),
+			offset  = 0,
 			sequence;
 
 		for( var i = 0; i < len; ) {
@@ -907,10 +916,10 @@ jconv.defineEncoding({
 	name: 'EUCJPtoJIS',
 
 	convert: function( buf ) {
-		var len         = buf.length,
-			codeBuf     = new Buffer( len * 3 + 3 ),
-			offset      = 0,
-			sequence;
+		var len      = buf.length,
+			codeBuf  = new Buffer( len * 3 + 3 ),
+			offset   = 0,
+			sequence = 0;
 
 		for( var i = 0; i < len; ) {
 			var buf1 = buf[ i++ ];
