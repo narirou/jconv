@@ -5,7 +5,7 @@ jconv
  * This module supported the encoding commonly used in japanese:  
    *Shift_JIS(CP932), ISO-2022-JP(-1), EUC-JP, UTF8* conversion.
  * Pure Javascript, no compile needed.
- * Almost much faster than node-iconv.
+ * Much faster than [node-iconv](https://github.com/bnoordhuis/node-iconv).
 
 ### Install
 ```
@@ -13,21 +13,20 @@ npm install jconv
 ```
 
 ### Usage
-An example simply convert **EUC-JP** to **Shift_JIS** :
+Example: Convert from **EUC-JP** to **Shift_JIS**
 
 ```javascript
 var jconv = require( 'jconv' );
 
-var converted = jconv.convert( buffer, 'EUCJP', 'SJIS' );
+var SJISBuffer = jconv.convert( EUCJPBuffer, 'EUCJP', 'SJIS' );
 ```
 
-<!-- Also available **node-iconv-lite** syntax:
+Also available **iconv-lite** syntax:
 ```javascript
 var string = jconv.decode( buffer, fromEncoding );
-```
-```javascript
+
 var buffer = jconv.encode( string, toEncoding );
-``` -->
+```
 
 ### API
 
@@ -35,13 +34,11 @@ var buffer = jconv.encode( string, toEncoding );
 * **jconv.convert( input, from, to )**  
 `input` is {Buffer} or {String}.  
 `from`, `to` are {String}: *Shift_JIS(SJIS), ISO-2022-JP(JIS), EUCJP, UTF8* are available.  
-`return` value is {Buffer}.
+`return` value is {Buffer}.  
 
-<!-- * #####`jconv.decode( inputBuffer, from )`
+* **jconv.decode( inputBuffer, from )**
+* **jconv.encode( inputString, to )** 
 
-* #####`jconv.encode( inputString, to )` 
-
- -->
 
 ### Speed
 Comparison with node-iconv@ 2.0.7 by converting ["Kokoro by NatsumeSoseki(夏目 漱石)"](http://www.aozora.gr.jp/cards/000148/files/773_14560.html)
@@ -50,7 +47,7 @@ Environment is Windows7, core i5 2405-S, mem8G, Node 0.10.22.
 (Please check on your hardware.)  
 `Gray` is iconv and `Blue` is jconv.  
 
-![jconv - encoding speed test chart](https://dl.dropboxusercontent.com/s/rz14axy7ie96o71/speedLog.png?dl=1&token_hash=AAH0Cmp7uzDES2aj9VtQaYI1rKDxcLhqs5YbBY0ZKF0ksw)
+![jconv - encoding speed test chart](https://raw.github.com/narirou/jconv/master/test/chart/speedLog.png)
 [[log]](https://raw.github.com/narirou/jconv/master/test/chart/speedLog.txt)  
 
 ### Encodings
@@ -63,8 +60,9 @@ Environment is Windows7, core i5 2405-S, mem8G, Node 0.10.22.
 
 ### Based on
  * [iconv-lite](https://github.com/ashtuchkin/iconv-lite) by ashtuchkin.
- * [node-iconv](https://github.com/bnoordhuis/node-iconv) by bnoordhuis.
  * [Encoding.js](https://github.com/polygonplanet/Unzipper.js) by polygonplanet.
+ * [iconv-js](https://github.com/Hikaru02/iconv-js) by Hikaru02.
+ * [node-iconv](https://github.com/bnoordhuis/node-iconv) by bnoordhuis.
  * [libiconv-1.9.1-ja-patch Description](http://www2d.biglobe.ne.jp/~msyk/software/libiconv-1.9.1-patch.html)
 
 Thank you so much!
