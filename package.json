@@ -1,7 +1,7 @@
 {
 	"name": "jconv",
 	"description": "Pure Javascript Iconv for Japanese encodings(Shift_JIS|ISO-2022-JP|EUC-JP|UTF-8).",
-	"version": "0.0.2",
+	"version": "0.0.3",
 	"auther": "narirou <narirou.github@gmail.com>",
 	"repository": {
 		"type": "git",
@@ -9,7 +9,7 @@
 	},
 	"main": "jconv.js",
 	"scripts": {
-		"test": "mocha --reporter spec ./test/unit.js"
+		"test": "mocha --reporter nyan ./test/unit.js"
 	},
 	"engines": {
 		"node": ">=0.8.0"
@@ -25,7 +25,8 @@
 		"async": "latest",
 		"iconv": "latest",
 		"benchmark": "latest",
-		"mocha": "latest"
+		"mocha": "latest",
+		"should": "latest"
 	},
 	"license": "MIT"
 }
