@@ -22,11 +22,11 @@
 		"japanese"
 	],
 	"devDependencies": {
-		"async": "latest",
-		"iconv": "latest",
-		"benchmark": "latest",
-		"mocha": "latest",
-		"should": "latest"
+		"async": "*",
+		"iconv": "*",
+		"benchmark": "*",
+		"mocha": "*",
+		"should": "*"
 	},
 	"license": "MIT"
 }
