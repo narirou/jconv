@@ -73,11 +73,11 @@ jconv.encode = function( str, to ) {
 function getName( name ) {
 	if( ! name ) return 'UTF8';
 	switch( name.toUpperCase() ) {
+		case 'WINDOWS-31J':
 		case 'CP932':
 		case 'SJIS':
 		case 'SHIFTJIS':
 		case 'SHIFT_JIS':
-		case 'SHIFT_JIS-MS':
 			return 'SJIS';
 		case 'EUCJP':
 		case 'EUC-JP':
