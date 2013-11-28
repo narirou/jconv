@@ -1,5 +1,8 @@
 jconv
 ====================
+
+[![Build Status](https://secure.travis-ci.org/narirou/jconv.png?branch=master)](https://travis-ci.org/narirou/jconv)
+
 > Iconv.js for Japanese characters.
 
  * This module supported the encoding commonly used in japanese:  
@@ -13,7 +16,7 @@ npm install jconv
 ```
 
 ## Usage
-For example simply Convert from **EUC-JP** to **Shift_JIS**:
+For example simply convert from **EUC-JP** to **Shift_JIS**:
 
 ```javascript
 var jconv = require( 'jconv' );
