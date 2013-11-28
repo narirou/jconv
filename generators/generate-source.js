@@ -1,10 +1,8 @@
 /* -------------------------------------------------------
 
 	Generate
-	Windows Dependent Characters ( JIS ) vs
+	Windows Dependent Characters vs
 	Unicode Mapping Table Source
-
-	JIS <-> UNICODE
 
 ------------------------------------------------------- */
 
@@ -13,21 +11,20 @@
 var fs         = require( 'fs' ),
 	LineReader = require( './linereader' ).LineReader;
 
-var input   = './sources/CP932.TXT',
-	output  = './sources/JISMS.TXT',
-	extFile = './sources/IBM.TXT';
+var nrtFile  = fs.readFileSync( './sources/NON-ROUND-TRIP.TXT' ),
+	nrtLines = nrtFile.toString().split( '\n' );
+
+var cp932File  = fs.readFileSync( './sources/CP932.TXT' ),
+	cp932Lines = cp932File.toString().split( '\n' );
 
 var COMMENT = /^#/,
 	FORMAT  = /^(U\+|0x|0X|\d\-)([0-9A-Fa-f]+)/;
 
-var extCodeTable = {};
 
-// IBM extensions convert to the otheres.
-function createExtCodeTable() {
-	var ext = fs.readFileSync( extFile );
-	var lines = ext.toString().split( '\n' );
+function JIS0208_NEC() {
+	var outputString = '';
 
-	lines.forEach( function( line ) {
+	cp932Lines.forEach( function( line ) {
 		if( ! line || COMMENT.test( line ) ) {
 			return;
 		}
@@ -37,66 +34,105 @@ function createExtCodeTable() {
 			return;
 		}
 
-		var before = to16bitString( to16bitNumeric( data[2] ) );
-		var after  = to16bitString( to16bitNumeric( data[0] ) );
-		var comment = data[3].toUpperCase()　+　'\n';
-
-		extCodeTable[ before ] = after;
-		extCodeTable[ before + '-comment' ] = comment;
-	});
-}
-
-function generateJISMS( key ) {
-	var outputString  = '',
-		ws            = fs.createWriteStream( output ),
-		rs            = fs.createReadStream( input ),
-		reader        = new LineReader( rs );
-
-	reader.on( 'line', function( line ) {
-		if( ! line || COMMENT.test( line ) ) {
-			return;
-		}
-
-		var data = line.split( '\t' );
-		if( ! data ) {
-			return;
-		}
-
-		var code = to16bitNumeric( data[0] );
+		var code    = to16bitNumeric( data[0] );
 		var unicode = to16bitNumeric( data[1] );
+		var comment = data[2].toUpperCase() + '\n';
 
-		// NEC EXTENSION
-		// NEC's Slect IBM EXTENSION
 		if( 0x8740 <= code && code <= 0x879C ||
 			0xED40 <= code && code <= 0xEEFC ) {
-
-			var comment = data[2];
 
 			code = SJIStoJIS( code );
 			outputString += [ to16bitString( code ), to16bitString( unicode ), comment ].join( '\t' );
 		}
+	});
 
-		// IBM EXTENSION
-		// This group is not exists in ISO-2022-JP Mapping Table.
-		// So convert to the other if possible.
-		else if( 0xFA40 <= code && code <= 0xFC4B ) {
+	fs.writeFileSync( './sources/JIS0208-NEC.TXT', outputString );
 
-			var ext = extCodeTable[ data[0] ];
-			var comment = extCodeTable[ data[0] + '-comment' ];
+	console.log( 'JIS0208-NEC source created.' );
+}
 
-			if( ext ) {
-				code = to16bitNumeric( ext );
-				code = SJIStoJIS( code );
-				outputString += [ to16bitString( code ), to16bitString( unicode ), comment ].join( '\t' );
-			}
+function JIS0208_IBM() {
+	var outputString = '';
+
+	nrtLines.forEach( function( line ) {
+		if( ! line || COMMENT.test( line ) ) {
+			return;
+		}
+
+		var data = line.split( '\t' );
+		if( ! data ) {
+			return;
+		}
+
+		var code    = to16bitNumeric( data[0] );
+		var unicode = to16bitNumeric( data[1] );
+		var comment = data[3].toUpperCase() + '\n';
+
+		if( 0xED40 <= code && code <= 0xEEFC ) {
+			code = SJIStoJIS( code );
+			outputString += [ to16bitString( code ), to16bitString( unicode ), comment ].join( '\t' );
 		}
 	});
 
-	reader.on( 'end', function() {
-		ws.write( outputString );
-		console.log( 'JISMS source created.' );
-	});
+	fs.writeFileSync( './sources/JIS0208-IBM.TXT', outputString );
+
+	console.log( 'JIS0208-IBM source created.' );
 }
+
+function CP932_IBM() {
+	var outputString = '';
+
+	nrtLines.forEach( function( line ) {
+		if( ! line || COMMENT.test( line ) ) {
+			return;
+		}
+
+		var data = line.split( '\t' );
+		if( ! data ) {
+			return;
+		}
+
+		var code    = to16bitNumeric( data[2] );
+		var unicode = to16bitNumeric( data[1] );
+		var comment = data[3].toUpperCase() + '\n';
+
+		if( 0xFA40 <= code && code <= 0xFC4B ) {
+			outputString += [ to16bitString( code ), to16bitString( unicode ), comment ].join( '\t' );
+		}
+	});
+
+	fs.writeFileSync( './sources/CP932-IBM-OVERRIDE.TXT', outputString );
+
+	console.log( 'CP932-IBM-OVERRIDE source created.' );
+}
+
+function CP932_NEC() {
+	var outputString = '';
+
+	nrtLines.forEach( function( line ) {
+		if( ! line || COMMENT.test( line ) ) {
+			return;
+		}
+
+		var data = line.split( '\t' );
+		if( ! data ) {
+			return;
+		}
+
+		var code    = to16bitNumeric( data[2] );
+		var unicode = to16bitNumeric( data[1] );
+		var comment = data[3].toUpperCase() + '\n';
+
+		if( 0x8740 <= code && code <= 0x879C ) {
+			outputString += [ to16bitString( code ), to16bitString( unicode ), comment ].join( '\t' );
+		}
+	});
+
+	fs.writeFileSync( './sources/CP932-NEC-OVERRIDE.TXT', outputString );
+
+	console.log( 'CP932-NEC-OVERRIDE source created.' );
+}
+
 
 function to16bitString( num ) {
 	if( typeof num !== 'number' ) {
@@ -165,8 +201,7 @@ function SJIStoJIS( sjis ) {
 }
 
 // Run
-createExtCodeTable();
-
-generateJISMS();
-
-
+JIS0208_NEC();
+JIS0208_IBM();
+CP932_NEC();
+CP932_IBM();

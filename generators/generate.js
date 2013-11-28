@@ -18,14 +18,29 @@ var fs         = require( 'fs' ),
 var files = {
 	'SJIS': [
 		'./sources/CP932.TXT',
-		'./sources/CP932-ADD.TXT'
+	],
+	'SJISInverted': [
+		'./sources/CP932.TXT',
+		'./sources/CP932-ADD.TXT',
+		'./sources/CP932-NEC-OVERRIDE.TXT',
+		'./sources/CP932-IBM-OVERRIDE.TXT',
 	],
 	'JIS': [
-		'./sources/JISMS.TXT',
+		'./sources/JIS0208-ADD.TXT',
+		'./sources/JIS0208.TXT',
+		'./sources/JIS0208-NEC.TXT',
+	],
+	'JISInverted': [
 		'./sources/JIS0208.TXT',
 		'./sources/JIS0208-ADD.TXT',
+		'./sources/JIS0208-NEC.TXT',
+		'./sources/JIS0208-IBM.TXT',
 	],
 	'JISEXT': [
+		'./sources/JIS0212.TXT',
+		'./sources/JIS0212-ADD.TXT'
+	],
+	'JISEXTInverted': [
 		'./sources/JIS0212.TXT',
 		'./sources/JIS0212-ADD.TXT'
 	]
@@ -39,9 +54,7 @@ var COMMENT = /^#/,
 function generate( key ) {
 	var sources       = files[ key ],
 		table         = {},
-		tableInverted = {},
-		ws            = fs.createWriteStream( outputPath + key + '.js' ),
-		wsInverted    = fs.createWriteStream( outputPath + key + 'Inverted.js' );
+		ws            = fs.createWriteStream( outputPath + key + '.js' );
 
 	async.eachSeries( sources, function( source, next ) {
 		var rs     = fs.createReadStream( source ),
@@ -60,37 +73,37 @@ function generate( key ) {
 			var code;
 			var unicode;
 
-			switch( key ) {
-				case 'SJIS':
-					code    = to16bitNumeric( data[ 0 ] );
-					unicode = to16bitNumeric( data[ 1 ] );
-					if( code < 0x80 || 0xA0 <= code && code <= 0xDF ) {
-						return;
-					}
-				break;
-
-				case 'JIS':
-					if( /JIS0208\.TXT/i.test( source ) ) {
-						code    = to16bitNumeric( data[ 1 ] );
-						unicode = to16bitNumeric( data[ 2 ] );
-					}
-					else {
-						code    = to16bitNumeric( data[ 0 ] );
-						unicode = to16bitNumeric( data[ 1 ] );
-					}
-				break;
-
-				default:
-					code    = to16bitNumeric( data[ 0 ] );
-					unicode = to16bitNumeric( data[ 1 ] );
-				break;
+			// JIS0208.TXT format
+			if( /JIS0208\.TXT/i.test( source ) ) {
+				code    = to16bitNumeric( data[ 1 ] );
+				unicode = to16bitNumeric( data[ 2 ] );
+			}
+			// NORMAL format
+			else {
+				code    = to16bitNumeric( data[ 0 ] );
+				unicode = to16bitNumeric( data[ 1 ] );
 			}
 
-			if( unicode !== null && table[ code ] === undefined ) {
-				table[ code ] = unicode;
+			// ASCII & HALFWIDTH_KATAKANA Part
+			if( code < 0x80 || 0xA0 <= code && code <= 0xDF ) {
+				return;
 			}
-			if( code !== null && tableInverted[ unicode ] === undefined ) {
-				tableInverted[ unicode ] = code;
+
+			if( /Inverted/.test( key ) ) {
+				if( /OVERRIDE/.test( source ) ) {
+					table[ unicode ] = code;
+				}
+				else if( code !== null && table[ unicode ] === undefined ) {
+					table[ unicode ] = code;
+				}
+			}
+			else {
+				if( /OVERRIDE/.test( source ) ) {
+					table[ code ] = unicode;
+				}
+				else if( unicode !== null && table[ code ] === undefined ) {
+					table[ code ] = unicode;
+				}
 			}
 		});
 
@@ -101,7 +114,6 @@ function generate( key ) {
 	}, function( error ) {
 
 		ws.write( toTableString( table ) );
-		wsInverted.write( toTableString( tableInverted ) );
 
 		console.log( key + ' table created.' );
 	});
