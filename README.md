@@ -46,7 +46,6 @@ var buffer = jconv.encode( string, toEncoding );
 * **jconv.encode( inputString, to )**  
     * `return` {Buffer}.  
 
-
 ## Speed
 Comparison with node-iconv@ 2.0.7 by converting [Japanese text](http://www.aozora.gr.jp/cards/000148/files/773_14560.html)
 using [Benchmark.js](https://github.com/bestiejs/benchmark.js).  
