@@ -3,7 +3,8 @@ var fs     = require( 'fs' ),
 	jconv  = require( __dirname + '/../' );
 
 function getBuffer( type, name ) {
-	return fs.readFileSync( __dirname + '/input/' + type + '/' + name + '.txt' );
+	var filePath = __dirname + '/input/' + type + '/' + name + '.TXT';
+	return fs.readFileSync( filePath );
 }
 
 function check( type, from, to ) {
@@ -139,11 +140,11 @@ describe( 'jconv.convert SIGN', function() {
 	check( 'SIGN', 'SJIS', 'EUCJP' );
 
 	check( 'SIGN', 'JIS', 'UTF8' );
-	// check( 'SIGN', 'JIS', 'SJIS' );
+	check( 'SIGN', 'JIS', 'SJIS' );
 	check( 'SIGN', 'JIS', 'EUCJP' );
 
 	check( 'SIGN', 'EUCJP', 'UTF8' );
-	// check( 'SIGN', 'EUCJP', 'SJIS' );
+	check( 'SIGN', 'EUCJP', 'SJIS' );
 	check( 'SIGN', 'EUCJP', 'JIS' );
 });
 

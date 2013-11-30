@@ -7,10 +7,10 @@ var inputPath  = __dirname + '/input/KOKORO/',
 	chartPath  = __dirname + '/chart/';
 
 var buffers = {
-	'SJIS' : fs.readFileSync( inputPath + '/sjis.txt' ),
-	'UTF8' : fs.readFileSync( inputPath + '/utf8.txt' ),
-	'JIS'  : fs.readFileSync( inputPath + '/jis.txt' ),
-	'EUCJP': fs.readFileSync( inputPath + '/eucjp.txt' ),
+	'SJIS' : fs.readFileSync( inputPath + '/SJIS.TXT' ),
+	'UTF8' : fs.readFileSync( inputPath + '/UTF8.TXT' ),
+	'JIS'  : fs.readFileSync( inputPath + '/JIS.TXT' ),
+	'EUCJP': fs.readFileSync( inputPath + '/EUCJP.TXT' ),
 };
 
 var logs = {};
@@ -20,8 +20,6 @@ var logText = '';
 function speedTest( from, to ) {
 	var FROM    = from.toUpperCase(),
 		TO      = to.toUpperCase(),
-		from    = from.toLowerCase(),
-		to      = to.toLowerCase(),
 		fixFROM = ( FROM === 'JIS'  ) ? 'ISO-2022-JP-1' :
 	              ( FROM === 'SJIS' ) ? 'CP932' : FROM,
 	    fixTO   = ( TO === 'JIS'  ) ? 'ISO-2022-JP-1' :
@@ -34,7 +32,8 @@ function speedTest( from, to ) {
 
 	log( title );
 
-	new Benchmark.Suite
+	var suite = new Benchmark.Suite;
+	suite
 		.add( 'jconv', function() {
 			_jconv.convert( buffer, FROM, TO );
 		})

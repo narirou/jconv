@@ -6,17 +6,15 @@ var inputPath  = __dirname + '/input/ALL/',
 
 function convertTest( from, to ) {
 	var FROM = from.toUpperCase(),
-		TO   = to.toUpperCase(),
-		from = from.toLowerCase(),
-		to   = to.toLowerCase();
+		TO   = to.toUpperCase();
 
 	console.log( '[ ' + FROM + ' -> ' + TO + ' ]' );
 
-	var buffer = fs.readFileSync( inputPath + from + '.txt' );
+	var buffer = fs.readFileSync( inputPath + FROM + '.TXT' );
 
 	var converted = jconv.convert( buffer, FROM, TO );
 
-	fs.writeFileSync( outputPath + from + '-' + to + '.txt', converted );
+	fs.writeFileSync( outputPath + FROM + '-' + TO + '.TXT', converted );
 
 	console.log( converted.toString() );
 }
