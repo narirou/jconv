@@ -25,7 +25,6 @@ var encodings = {};
 
 var Encoding = function( obj ) {
 	this.name = obj.name;
-	this.unknown = obj.unknown;
 	this.convert = obj.convert;
 };
 
@@ -148,10 +147,10 @@ function toUnicodeBuffer( unicode, unicodeBuffer, offset ) {
 // UTF8 -> SJIS
 jconv.defineEncoding({
 	name: 'UTF8toSJIS',
-	unknown: tables[ 'SJISInverted' ][ unknown2 ],
 
 	convert: function( buf ) {
-		var tableSjisInv = tables[ 'SJISInverted' ];
+		var tableSjisInv = tables[ 'SJISInverted' ],
+			unknownSjis  = tableSjisInv[ unknown2 ];
 
 		var len     = buf.length,
 			sjisBuf = new Buffer( len * 2 ),
@@ -186,7 +185,7 @@ jconv.defineEncoding({
 			}
 			// KANJI
 			else {
-				var code = tableSjisInv[ unicode ] || this.unknown;
+				var code = tableSjisInv[ unicode ] || unknownSjis;
 				sjisBuf[ offset++ ] = code >> 8;
 				sjisBuf[ offset++ ] = code & 0xFF;
 			}
@@ -198,11 +197,11 @@ jconv.defineEncoding({
 // UTF8toJIS
 jconv.defineEncoding({
 	name: 'UTF8toJIS',
-	unknown: tables[ 'JISInverted' ][ unknown2 ],
 
 	convert: function( buf ) {
 		var tableJisInv    = tables[ 'JISInverted' ],
-			tableJisExtInv = tables[ 'JISEXTInverted' ];
+			tableJisExtInv = tables[ 'JISEXTInverted' ],
+			unknownJis     = tableJisInv[ unknown2 ];
 
 		var len      = buf.length,
 			codeBuf  = new Buffer( len * 3 + 3 ),
@@ -283,8 +282,8 @@ jconv.defineEncoding({
 							codeBuf[ offset++ ] = 0x24;
 							codeBuf[ offset++ ] = 0x42;
 						}
-						codeBuf[ offset++ ] = this.unknown >> 8;
-						codeBuf[ offset++ ] = this.unknown & 0xFF;
+						codeBuf[ offset++ ] = unknownJis >> 8;
+						codeBuf[ offset++ ] = unknownJis & 0xFF;
 					}
 				}
 			}
@@ -304,11 +303,11 @@ jconv.defineEncoding({
 // UTF8 -> EUCJP
 jconv.defineEncoding({
 	name: 'UTF8toEUCJP',
-	unknown: tables[ 'JISInverted' ][ unknown2 ],
 
 	convert: function( buf ) {
 		var tableJisInv    = tables[ 'JISInverted' ],
-			tableJisExtInv = tables[ 'JISEXTInverted' ];
+			tableJisExtInv = tables[ 'JISEXTInverted' ],
+			unknownJis     = tableJisInv[ unknown2 ];
 
 		var len     = buf.length,
 			codeBuf = new Buffer( len * 2 ),
@@ -360,8 +359,8 @@ jconv.defineEncoding({
 					}
 					// UNKNOWN
 					else {
-						codeBuf[ offset++ ] = ( this.unknown >> 8 ) - 0x80;
-						codeBuf[ offset++ ] = ( this.unknown & 0xFF ) - 0x80;
+						codeBuf[ offset++ ] = ( unknownJis >> 8 ) - 0x80;
+						codeBuf[ offset++ ] = ( unknownJis & 0xFF ) - 0x80;
 					}
 				}
 			}
@@ -646,9 +645,11 @@ jconv.defineEncoding({
 // JIS -> SJIS
 jconv.defineEncoding({
 	name: 'JIStoSJIS',
-	unknown: tables[ 'SJISInverted' ][ unknown2 ],
 
 	convert: function( buf ) {
+		var tableSjis    = tables[ 'SJIS' ],
+			tableSjisInv = tables[ 'SJISInverted' ],
+			unknownSjis  = tableSjisInv[ unknown2 ];
 
 		var len      = buf.length,
 			codeBuf  = new Buffer( len * 2 ),
@@ -721,13 +722,22 @@ jconv.defineEncoding({
 						}
 						buf2 += 0x7E;
 					}
+					// NEC SELECT IBM EXTENSION -> IBM EXTENSION.
+					var sjis = ( buf1 & 0xFF ) << 8 | buf2;
+					if( 0xED40 <= sjis && sjis <= 0xEEFC ) {
+						var unicode   = tableSjis[ sjis ],
+							sjisFixed = tableSjisInv[ unicode ] || unknownSjis;
+
+						buf1 = sjisFixed >> 8;
+						buf2 = sjisFixed & 0xFF;
+					}
 					codeBuf[ offset++ ] = buf1;
 					codeBuf[ offset++ ] = buf2;
 				break;
 				// EXTENSION
 				case 3:
-					codeBuf[ offset++ ] = this.unknown >> 8;
-					codeBuf[ offset++ ] = this.unknown & 0xFF;
+					codeBuf[ offset++ ] = unknownSjis >> 8;
+					codeBuf[ offset++ ] = unknownSjis & 0xFF;
 					i++;
 				break;
 			}
@@ -802,7 +812,7 @@ jconv.defineEncoding({
 	}
 });
 
-// EUC -> UTF8
+// EUCJP -> UTF8
 jconv.defineEncoding({
 	name: 'EUCJPtoUTF8',
 
@@ -853,6 +863,10 @@ jconv.defineEncoding({
 	unknown: tables[ 'SJISInverted' ][ unknown2 ],
 
 	convert: function( buf ) {
+		var tableSjis    = tables[ 'SJIS' ],
+			tableSjisInv = tables[ 'SJISInverted' ],
+			unknownSjis  = tableSjisInv[ unknown2 ];
+
 		var len     = buf.length,
 			codeBuf = new Buffer( len * 2 ),
 			offset  = 0,
@@ -871,8 +885,8 @@ jconv.defineEncoding({
 			}
 			// EXTENSION
 			else if( buf1 === 0x8F ) {
-				codeBuf[ offset++ ] = this.unknown >> 8;
-				codeBuf[ offset++ ] = this.unknown & 0xFF;
+				codeBuf[ offset++ ] = unknownSjis >> 8;
+				codeBuf[ offset++ ] = unknownSjis & 0xFF;
 				i += 2;
 			}
 			// KANJI
@@ -902,6 +916,15 @@ jconv.defineEncoding({
 						buf1 += 0x70;
 					}
 					buf2 -= 0x02;
+				}
+				// NEC SELECT IBM EXTENSION -> IBM EXTENSION.
+				var sjis = ( buf1 & 0xFF ) << 8 | buf2;
+				if( 0xED40 <= sjis && sjis <= 0xEEFC ) {
+					var unicode   = tableSjis[ sjis ],
+						sjisFixed = tableSjisInv[ unicode ] || unknownSjis;
+
+					buf1 = sjisFixed >> 8;
+					buf2 = sjisFixed & 0xFF;
 				}
 				codeBuf[ offset++ ] = buf1;
 				codeBuf[ offset++ ] = buf2;

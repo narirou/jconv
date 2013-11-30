@@ -190,10 +190,7 @@ function SJIStoJIS( sjis ) {
 			}
 			b2 -= 0x7E;
 		}
-
-		b1 = b1 & 0xFF;
-
-		return ( b1 << 8 ) + b2;
+		return ( (b1 & 0xFF) << 8 ) + b2;
 	}
 	else {
 		return b1;

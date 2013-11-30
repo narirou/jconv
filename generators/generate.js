@@ -71,17 +71,17 @@ function generate( key ) {
 			}
 
 			var code;
-			var unicode;
+			var nextCode;
 
 			// JIS0208.TXT format
 			if( /JIS0208\.TXT/i.test( source ) ) {
-				code    = to16bitNumeric( data[ 1 ] );
-				unicode = to16bitNumeric( data[ 2 ] );
+				code     = to16bitNumeric( data[ 1 ] );
+				nextCode = to16bitNumeric( data[ 2 ] );
 			}
 			// NORMAL format
 			else {
-				code    = to16bitNumeric( data[ 0 ] );
-				unicode = to16bitNumeric( data[ 1 ] );
+				code     = to16bitNumeric( data[ 0 ] );
+				nextCode = to16bitNumeric( data[ 1 ] );
 			}
 
 			// ASCII & HALFWIDTH_KATAKANA Part
@@ -91,18 +91,18 @@ function generate( key ) {
 
 			if( /Inverted/.test( key ) ) {
 				if( /OVERRIDE/.test( source ) ) {
-					table[ unicode ] = code;
+					table[ nextCode ] = code;
 				}
-				else if( code !== null && table[ unicode ] === undefined ) {
-					table[ unicode ] = code;
+				else if( code !== null && table[ nextCode ] === undefined ) {
+					table[ nextCode ] = code;
 				}
 			}
 			else {
 				if( /OVERRIDE/.test( source ) ) {
-					table[ code ] = unicode;
+					table[ code ] = nextCode;
 				}
-				else if( unicode !== null && table[ code ] === undefined ) {
-					table[ code ] = unicode;
+				else if( nextCode !== null && table[ code ] === undefined ) {
+					table[ code ] = nextCode;
 				}
 			}
 		});
