@@ -3,7 +3,7 @@ jconv
 
 [![Build Status](https://secure.travis-ci.org/narirou/jconv.png?branch=master)](https://travis-ci.org/narirou/jconv)
 
-> Iconv.js for Japanese characters.
+> Pure Javascript Iconv for Japanese encodings.
 
  * This module supported the encoding commonly used in japanese:  
    *Shift_JIS(CP932), ISO-2022-JP(-1), EUC-JP, UTF8* conversion.
@@ -54,7 +54,7 @@ Environment is *Windows7, core i5 2405-S, mem8G, Node 0.10.22*.
 `Gray` is iconv and `Blue` is jconv.  
 
 ![jconv - encoding speed test chart](./test/chart/speedLog.png)
-[[log]](./test/chart/speedLog.txt)  
+[[latest log]](./test/chart/speedLog.txt)  
 <!-- https://raw.github.com/narirou/jconv/master/ -->
 
 ## Encodings
