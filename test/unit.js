@@ -100,11 +100,11 @@ describe( 'jconv.convert WindowsDependent', function() {
 	check( 'WindowsDependent', 'SJIS', 'EUCJP' );
 
 	check( 'WindowsDependent', 'JIS', 'UTF8' );
-	// check( 'WindowsDependent', 'JIS', 'SJIS' );
+	check( 'WindowsDependent', 'JIS', 'SJIS' );
 	check( 'WindowsDependent', 'JIS', 'EUCJP' );
 
 	check( 'WindowsDependent', 'EUCJP', 'UTF8' );
-	// check( 'WindowsDependent', 'EUCJP', 'SJIS' );
+	check( 'WindowsDependent', 'EUCJP', 'SJIS' );
 	check( 'WindowsDependent', 'EUCJP', 'JIS' );
 });
 
