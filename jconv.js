@@ -596,12 +596,16 @@ jconv.defineEncoding({
 					buf3 = buf[ i++ ];
 				switch( buf2 ) {
 					case 0x28:
-						if( buf3 === 0x42 ) {
+						if( buf3 === 0x42 || buf === 0xA1 ) {
 							sequence = 0;
 						}
 						else if( buf3 === 0x49 ) {
 							sequence = 1;
 						}
+					break;
+					case 0x26:
+						sequence = 2;
+						i += 3;
 					break;
 					case 0x24:
 						if( buf3 === 0x40 || buf3 === 0x42 ) {
@@ -665,12 +669,16 @@ jconv.defineEncoding({
 					buf3 = buf[ i++ ];
 				switch( buf2 ) {
 					case 0x28:
-						if( buf3 === 0x42 ) {
+						if( buf3 === 0x42 || buf === 0xA1 ) {
 							sequence = 0;
 						}
 						else if( buf3 === 0x49 ) {
 							sequence = 1;
 						}
+					break;
+					case 0x26:
+						sequence = 2;
+						i += 3;
 					break;
 					case 0x24:
 						if( buf3 === 0x40 || buf3 === 0x42 ) {
@@ -723,7 +731,7 @@ jconv.defineEncoding({
 						buf2 += 0x7E;
 					}
 					// NEC SELECT IBM EXTENSION -> IBM EXTENSION.
-					var sjis = ( buf1 & 0xFF ) << 8 | buf2;
+					var sjis = ( (buf1 & 0xFF) << 8 ) + buf2;
 					if( 0xED40 <= sjis && sjis <= 0xEEFC ) {
 						var unicode   = tableSjis[ sjis ],
 							sjisFixed = tableSjisInv[ unicode ] || unknownSjis;
@@ -765,12 +773,16 @@ jconv.defineEncoding({
 					buf3 = buf[ i++ ];
 				switch( buf2 ) {
 					case 0x28:
-						if( buf3 === 0x42 ) {
+						if( buf3 === 0x42 || buf === 0xA1 ) {
 							sequence = 0;
 						}
 						else if( buf3 === 0x49 ) {
 							sequence = 1;
 						}
+					break;
+					case 0x26:
+						sequence = 2;
+						i += 3;
 					break;
 					case 0x24:
 						if( buf3 === 0x40 || buf3 === 0x42 ) {
@@ -918,7 +930,7 @@ jconv.defineEncoding({
 					buf2 -= 0x02;
 				}
 				// NEC SELECT IBM EXTENSION -> IBM EXTENSION.
-				var sjis = ( buf1 & 0xFF ) << 8 | buf2;
+				var sjis = ( (buf1 & 0xFF) << 8 ) + buf2;
 				if( 0xED40 <= sjis && sjis <= 0xEEFC ) {
 					var unicode   = tableSjis[ sjis ],
 						sjisFixed = tableSjisInv[ unicode ] || unknownSjis;
