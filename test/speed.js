@@ -6,11 +6,10 @@ var fs        = require( 'fs' ),
 var inputPath  = __dirname + '/input/KOKORO/',
 	chartPath  = __dirname + '/chart/';
 
-var buffers = {
-	'SJIS' : fs.readFileSync( inputPath + '/SJIS.TXT' ),
-	'UTF8' : fs.readFileSync( inputPath + '/UTF8.TXT' ),
-	'JIS'  : fs.readFileSync( inputPath + '/JIS.TXT' ),
-	'EUCJP': fs.readFileSync( inputPath + '/EUCJP.TXT' ),
+var fixEncoding = {
+	'SJIS':    'CP932',
+	'JIS':     'ISO-2022-JP-1',
+	'UNICODE': 'UTF16LE'
 };
 
 var logs = {};
@@ -20,14 +19,13 @@ var logText = '';
 function speedTest( from, to ) {
 	var FROM    = from.toUpperCase(),
 		TO      = to.toUpperCase(),
-		fixFROM = ( FROM === 'JIS'  ) ? 'ISO-2022-JP-1' :
-	              ( FROM === 'SJIS' ) ? 'CP932' : FROM,
-	    fixTO   = ( TO === 'JIS'  ) ? 'ISO-2022-JP-1' :
-	              ( TO === 'SJIS' ) ? 'CP932' : TO;
+		fixFROM = fixEncoding[ FROM ] || FROM,
+		fixTO   = fixEncoding[ TO ] || TO;
 
 	var _jconv  = jconv;
 	var _iconv  = new Iconv( fixFROM, fixTO + '//TRANSLIT//IGNORE' );
-	var buffer  = buffers[ FROM ];
+
+	var buffer  = fs.readFileSync( inputPath + FROM + '.TXT' );
 	var title   = '[ ' + FROM + ' -> ' + TO + ' ]';
 
 	log( title );
@@ -87,5 +85,8 @@ speedTest( 'JIS', 'EUCJP' );
 speedTest( 'EUCJP', 'UTF8' );
 speedTest( 'EUCJP', 'SJIS' );
 speedTest( 'EUCJP', 'JIS' );
+
+speedTest( 'UTF8', 'UNICODE' );
+speedTest( 'UNICODE', 'UTF8' );
 
 writeLog();

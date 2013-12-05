@@ -4,6 +4,14 @@ var fs    = require( 'fs' ),
 var inputPath  = __dirname + '/input/ALL/',
 	outputPath = __dirname + '/output/';
 
+var internalEncoding = {
+	'UNICODE': 'UCS2',
+	'UTF8':    'UTF8',
+	'SJIS':    'BINARY',
+	'EUCJP':   'BINARY',
+	'JIS':     'BINARY'
+};
+
 function convertTest( from, to ) {
 	var FROM = from.toUpperCase(),
 		TO   = to.toUpperCase();
@@ -14,9 +22,11 @@ function convertTest( from, to ) {
 
 	var converted = jconv.convert( buffer, FROM, TO );
 
+	console.log( converted.toString( internalEncoding[ TO ] ) );
+
 	fs.writeFileSync( outputPath + FROM + '-' + TO + '.TXT', converted );
 
-	console.log( converted.toString() );
+	return converted;
 }
 
 convertTest( 'UTF8', 'SJIS' );
@@ -34,3 +44,6 @@ convertTest( 'JIS', 'EUCJP' );
 convertTest( 'EUCJP', 'UTF8' );
 convertTest( 'EUCJP', 'SJIS' );
 convertTest( 'EUCJP', 'JIS' );
+
+convertTest( 'UTF8', 'UNICODE' );
+convertTest( 'UNICODE', 'UTF8' );

@@ -221,3 +221,16 @@ describe( 'jconv.convert EXTENSION', function() {
 	check( 'EXTENSION', 'EUCJP', 'UTF8' );
 	check( 'EXTENSION', 'EUCJP', 'JIS' );
 });
+
+// UNICODE
+describe( 'jconv.convert UNICODE', function() {
+	check( 'BASIC', 'SJIS', 'UNICODE' );
+	check( 'BASIC', 'JIS', 'UNICODE' );
+	check( 'BASIC', 'EUCJP', 'UNICODE' );
+	check( 'BASIC', 'UTF8', 'UNICODE' );
+
+	check( 'BASIC', 'UNICODE', 'SJIS' );
+	check( 'BASIC', 'UNICODE', 'JIS' );
+	check( 'BASIC', 'UNICODE', 'EUCJP' );
+	check( 'BASIC', 'UNICODE', 'UTF8' );
+});

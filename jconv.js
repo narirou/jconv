@@ -61,8 +61,7 @@ jconv.convert = function( buf, from, to ) {
 };
 
 jconv.decode = function( buf, from ) {
-	var utf8Buf = jconv.convert( buf, from, 'UTF8' );
-	return utf8Buf.toString( 'utf-8' );
+	return jconv.convert( buf, from, 'UTF8' ).toString();
 };
 
 jconv.encode = function( str, to ) {
@@ -89,6 +88,12 @@ function getName( name ) {
 		case 'UTF8':
 		case 'UTF-8':
 			return 'UTF8';
+		case 'UNICODE':
+		case 'UCS2':
+		case 'UCS-2':
+		case 'UTF16LE':
+		case 'UTF-16LE':
+			return 'UNICODE';
 		default:
 			throw new Error( 'Encoding not recognized.' );
 	}
@@ -96,11 +101,11 @@ function getName( name ) {
 
 function ensureBuffer( buf ) {
 	buf = buf || new Buffer( 0 );
-	return ( buf instanceof Buffer ) ? buf : new Buffer( buf.toString(), 'utf8' );
+	return ( buf instanceof Buffer ) ? buf : new Buffer( buf.toString(), 'UTF8' );
 }
 
 // Unicode CharCode -> UTF8 Buffer
-function toUtf8Buffer( unicode, utf8Buffer, offset ) {
+function setUtf8Buffer( unicode, utf8Buffer, offset ) {
 	if( unicode < 0x80 ) {
 		utf8Buffer[ offset++ ] = unicode;
 	}
@@ -138,11 +143,71 @@ function toUtf8Buffer( unicode, utf8Buffer, offset ) {
 	return offset;
 }
 
-function toUnicodeBuffer( unicode, unicodeBuffer, offset ) {
+function setUnicodeBuffer( unicode, unicodeBuffer, offset ) {
 	unicodeBuffer[ offset++ ] = unicode & 0xFF;
 	unicodeBuffer[ offset++ ] = unicode >> 8;
 	return offset;
 }
+
+// UNICODE = UTF16LE(noBOM)
+// UNICODE -> UTF8
+jconv.defineEncoding({
+	name: 'UNICODEtoUTF8',
+
+	convert: function( buf ) {
+		var setUtf8Buf = setUtf8Buffer;
+
+		var len        = buf.length,
+			utf8Buf = new Buffer( len * 3 ),
+			offset     = 0,
+			unicode;
+
+		for( var i = 0; i < len; ) {
+			var buf1 = buf[ i++ ],
+				buf2 = buf[ i++ ];
+
+			unicode = ( ( buf2 & 0xFF ) << 8 ) + buf1;
+
+			offset = setUtf8Buf( unicode, utf8Buf, offset );
+		}
+		return utf8Buf.slice( 0, offset );
+	}
+});
+
+// UTF8 -> UNICODE
+jconv.defineEncoding({
+	name: 'UTF8toUNICODE',
+
+	convert: function( buf ) {
+		var setUnicodeBuf = setUnicodeBuffer;
+
+		var len        = buf.length,
+			unicodeBuf = new Buffer( len * 2 ),
+			offset     = 0,
+			unicode;
+
+		for( var i = 0; i < len; ) {
+			var buf1 = buf[ i++ ];
+
+			switch( buf1 >> 4 ) {
+				case 0: case 1: case 2: case 3: case 4: case 5: case 6: case 7:
+					unicode = buf1;
+				break;
+				case 12: case 13:
+					unicode = (buf1 & 0x1F) <<  6 | buf[ i++ ] & 0x3F;
+				break;
+				case 14:
+					unicode = (buf1 & 0x0F) << 12 | (buf[ i++ ] & 0x3F) <<  6 | buf[ i++ ] & 0x3F;
+				break;
+				default:
+					unicode = (buf1 & 0x07) << 18 | (buf[ i++ ] & 0x3F) << 12 | (buf[ i++ ] & 0x3F) << 6 | buf[ i++ ] & 0x3F;
+				break;
+			}
+			offset = setUnicodeBuf( unicode, unicodeBuf, offset );
+		}
+		return unicodeBuf.slice( 0, offset );
+	}
+});
 
 // UTF8 -> SJIS
 jconv.defineEncoding({
@@ -375,7 +440,7 @@ jconv.defineEncoding({
 
 	convert: function( buf ) {
 		var tableSjis = tables[ 'SJIS' ],
-			toUtf8Buf = toUtf8Buffer;
+			setUtf8Buf = setUtf8Buffer;
 
 		var len     = buf.length,
 			utf8Buf = new Buffer( len * 3 ),
@@ -398,7 +463,7 @@ jconv.defineEncoding({
 				var code = ( buf1 << 8 ) + buf[ i++ ];
 				unicode  = tableSjis[ code ] || unknown2;
 			}
-			offset = toUtf8Buf( unicode, utf8Buf, offset );
+			offset = setUtf8Buf( unicode, utf8Buf, offset );
 		}
 		return utf8Buf.slice( 0, offset );
 	}
@@ -579,7 +644,7 @@ jconv.defineEncoding({
 	convert: function( buf ) {
 		var tableJis    = tables[ 'JIS' ],
 			tableJisExt = tables[ 'JISEXT' ],
-			toUtf8Buf   = toUtf8Buffer;
+			setUtf8Buf   = setUtf8Buffer;
 
 		var len      = buf.length,
 			utf8Buf  = new Buffer( len * 2 ),
@@ -621,6 +686,18 @@ jconv.defineEncoding({
 			}
 
 			switch( sequence ) {
+				// LATIN
+				// case -1:
+				// 	if( buf1 === 0x5C ) {
+				// 		unicode = 0xA5;
+				// 	}
+				// 	else if( buf1 === 0x7E ) {
+				// 		unicode = 0x203E;
+				// 	}
+				// 	else {
+				// 		unicode = buf1;
+				// 	}
+				// break;
 				// ASCII
 				case 0:
 					unicode = buf1;
@@ -640,7 +717,7 @@ jconv.defineEncoding({
 					unicode  = tableJisExt[ code ] || unknown2;
 				break;
 			}
-			offset = toUtf8Buf( unicode, utf8Buf, offset );
+			offset = setUtf8Buf( unicode, utf8Buf, offset );
 		}
 		return utf8Buf.slice( 0, offset );
 	}
@@ -831,7 +908,7 @@ jconv.defineEncoding({
 	convert: function( buf ) {
 		var tableJis    = tables[ 'JIS' ],
 			tableJisExt = tables[ 'JISEXT' ],
-			toUtf8Buf   = toUtf8Buffer;
+			setUtf8Buf   = setUtf8Buffer;
 
 		var len     = buf.length,
 			utf8Buf = new Buffer( len * 2 ),
@@ -863,7 +940,7 @@ jconv.defineEncoding({
 					jis = ( jisbuf1 << 8 ) + jisbuf2;
 				unicode = tableJis[ jis ] || unknown2;
 			}
-			offset = toUtf8Buf( unicode, utf8Buf, offset );
+			offset = setUtf8Buf( unicode, utf8Buf, offset );
 		}
 		return utf8Buf.slice( 0, offset );
 	}
