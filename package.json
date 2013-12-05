@@ -1,32 +1,34 @@
 {
-	"name": "jconv",
-	"description": "Pure Javascript Iconv for Japanese encodings (Shift_JIS|ISO-2022-JP|EUC-JP|UTF-8).",
-	"version": "0.0.5",
-	"auther": "narirou <narirou.github@gmail.com>",
-	"repository": {
-		"type": "git",
-		"url": "https://github.com/narirou/jconv.git"
-	},
-	"main": "jconv.js",
-	"scripts": {
-		"test": "mocha ./test/unit.js"
-	},
-	"engines": {
-		"node": ">=0.8.0"
-	},
-	"keywords": [
-		"iconv",
-		"encode",
-		"encoding",
-		"charset",
-		"japanese"
-	],
-	"devDependencies": {
-		"async": "*",
-		"iconv": "*",
-		"benchmark": "*",
-		"mocha": "*",
-		"should": "*"
-	},
-	"license": "MIT"
+  "name": "jconv",
+  "description": "Pure Javascript Iconv for Japanese encodings (Shift_JIS|ISO-2022-JP|EUC-JP|UTF-8).",
+  "version": "0.0.5",
+  "auther": "narirou <narirou.github@gmail.com>",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/narirou/jconv.git"
+  },
+  "main": "jconv.js",
+  "scripts": {
+    "test": "mocha ./test/unit.js"
+  },
+  "engines": {
+    "node": ">=0.8.0"
+  },
+  "keywords": [
+    "iconv",
+    "encode",
+    "encoding",
+    "charset",
+    "japanese"
+  ],
+  "devDependencies": {
+    "async": "*",
+    "iconv": "*",
+    "benchmark": "*",
+    "mocha": "*",
+    "should": "*",
+    "grunt-closurecompiler": "*",
+    "grunt": "~0.4.2"
+  },
+  "license": "MIT"
 }
