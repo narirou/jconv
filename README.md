@@ -47,11 +47,11 @@ var buffer = jconv.encode( string, toEncoding );
     * `return` {Buffer}.  
 
 ## Speed
-Comparison with node-iconv@ 2.0.7 by converting [Japanese text](http://www.aozora.gr.jp/cards/000148/files/773_14560.html)
+Comparison with node-iconv@2.0.7 by converting [Japanese text](http://www.aozora.gr.jp/cards/000148/files/773_14560.html)
 using [Benchmark.js](https://github.com/bestiejs/benchmark.js).  
 Environment is *Windows7, core i5 2405-S, mem8G, Node 0.10.22*.
 (Please check on your hardware.)  
-`Gray` is iconv and `Blue` is jconv.  
+`Gray`: iconv, `Blue`: jconv (higher is better)  
 
 ![jconv - encoding speed test chart](./test/chart/speedLog.png)
 [[latest log]](./test/chart/speedLog.txt)  
@@ -59,6 +59,7 @@ Environment is *Windows7, core i5 2405-S, mem8G, Node 0.10.22*.
 
 ## Encodings
  * Supported: Shift_JIS(CP932), ISO-2022-JP(-1), EUC-JP, UTF8.  
+ 
  * Supported Windows Dependent Characters <-> JIS Conversion.  
 [(problem details)](http://support.microsoft.com/default.aspx?scid=kb;ja;JP170559)  
 
