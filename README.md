@@ -1,9 +1,9 @@
 jconv
 ====================
 
-[![Build Status](https://secure.travis-ci.org/narirou/jconv.png?branch=master)](https://travis-ci.org/narirou/jconv)
-
 > Pure Javascript Iconv for Japanese encodings.
+
+[![Build Status](https://secure.travis-ci.org/narirou/jconv.png?branch=master)](https://travis-ci.org/narirou/jconv)
 
  * This module supported the encoding commonly used in japanese:  
    *Shift_JIS(CP932), ISO-2022-JP(-1), EUC-JP, UTF8* conversion.
