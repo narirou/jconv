@@ -9,7 +9,7 @@
   },
   "main": "jconv.js",
   "scripts": {
-    "test": "mocha ./test/unit.js"
+    "test": "grunt test"
   },
   "engines": {
     "node": ">=0.8.0"
@@ -25,10 +25,10 @@
     "async": "*",
     "iconv": "*",
     "benchmark": "*",
-    "mocha": "*",
     "should": "*",
+    "grunt": "~0.4.2",
     "grunt-closurecompiler": "*",
-    "grunt": "~0.4.2"
+    "grunt-mocha-test": "*"
   },
   "license": "MIT"
 }

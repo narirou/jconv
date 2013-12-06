@@ -9,8 +9,15 @@ module.exports = ( grunt ) ->
 					'jconv.min.js': 'jconv.js'
 			options:
 				'compilation_level': 'SIMPLE_OPTIMIZATIONS'
+
+		mochaTest:
+			test:
+				src: './test/unit.js'
 	)
 
 	grunt.loadNpmTasks 'grunt-closurecompiler'
+	grunt.loadNpmTasks 'grunt-mocha-test'
 
-	grunt.registerTask 'default', ['closurecompiler:build']
+	grunt.registerTask 'build', ['closurecompiler:build']
+	grunt.registerTask 'test', ['mochaTest:test']
+
