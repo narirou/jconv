@@ -32,29 +32,29 @@ function convertTest( from, to ) {
 }
 
 // Unicode
-// convertTest( 'UTF8', 'UNICODE' );
-// convertTest( 'SJIS', 'UNICODE' );
-// convertTest( 'JIS', 'UNICODE' );
-// convertTest( 'EUCJP', 'UNICODE' );
+convertTest( 'UTF8', 'UNICODE' );
+convertTest( 'SJIS', 'UNICODE' );
+convertTest( 'JIS', 'UNICODE' );
+convertTest( 'EUCJP', 'UNICODE' );
 
-// convertTest( 'UNICODE', 'UTF8' );
-// convertTest( 'UNICODE', 'SJIS' );
-// convertTest( 'UNICODE', 'JIS' );
+convertTest( 'UNICODE', 'UTF8' );
+convertTest( 'UNICODE', 'SJIS' );
+convertTest( 'UNICODE', 'JIS' );
 convertTest( 'UNICODE', 'EUCJP' );
 
 // Basics
-// convertTest( 'UTF8', 'SJIS' );
-// convertTest( 'UTF8', 'JIS' );
-// convertTest( 'UTF8', 'EUCJP' );
+convertTest( 'UTF8', 'SJIS' );
+convertTest( 'UTF8', 'JIS' );
+convertTest( 'UTF8', 'EUCJP' );
 
-// convertTest( 'SJIS', 'UTF8' );
-// convertTest( 'SJIS', 'JIS' );
-// convertTest( 'SJIS', 'EUCJP' );
+convertTest( 'SJIS', 'UTF8' );
+convertTest( 'SJIS', 'JIS' );
+convertTest( 'SJIS', 'EUCJP' );
 
-// convertTest( 'JIS', 'UTF8' );
-// convertTest( 'JIS', 'SJIS' );
-// convertTest( 'JIS', 'EUCJP' );
+convertTest( 'JIS', 'UTF8' );
+convertTest( 'JIS', 'SJIS' );
+convertTest( 'JIS', 'EUCJP' );
 
-// convertTest( 'EUCJP', 'UTF8' );
-// convertTest( 'EUCJP', 'SJIS' );
-// convertTest( 'EUCJP', 'JIS' );
+convertTest( 'EUCJP', 'UTF8' );
+convertTest( 'EUCJP', 'SJIS' );
+convertTest( 'EUCJP', 'JIS' );
