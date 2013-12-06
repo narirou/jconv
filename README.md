@@ -6,7 +6,7 @@ jconv
 [![Build Status](https://secure.travis-ci.org/narirou/jconv.png?branch=master)](https://travis-ci.org/narirou/jconv)
 
  * This module supported the encoding commonly used in japanese:  
-   *Shift_JIS(CP932), ISO-2022-JP(-1), EUC-JP, UTF8* conversion.
+   *Shift_JIS(CP932), ISO-2022-JP(-1), EUC-JP, UTF8, UNICODE(UCS2)* conversion.
  * Pure Javascript, no compile needed.
  * Much faster than [node-iconv](https://github.com/bnoordhuis/node-iconv).
 
@@ -37,7 +37,7 @@ var buffer = jconv.encode( string, toEncoding );
 * **jconv( input, from, to )**  
 * **jconv.convert( input, from, to )**  
     * `input` {Buffer} or {String}.  
-    * `from`, `to` {String}: *Shift_JIS(SJIS), ISO-2022-JP(JIS), EUCJP, UTF8* are available.  
+    * `from`, `to` {String}: *Shift_JIS(SJIS), ISO-2022-JP(JIS), EUCJP, UTF8, UNICODE(UCS2, UTF16LE)* are available.  
     * `return` {Buffer}.  
 
 * **jconv.decode( inputBuffer, from )**  
@@ -58,7 +58,7 @@ Environment is *Windows7, core i5 2405-S, mem8G, Node 0.10.22*.
 <!-- https://raw.github.com/narirou/jconv/master/ -->
 
 ## Encodings
- * Supported: Shift_JIS(CP932), ISO-2022-JP(-1), EUC-JP, UTF8.  
+ * Supported: Shift_JIS(CP932), ISO-2022-JP(-1), EUC-JP, UTF8, UNICODE(UCS2).  
  
  * Supported Windows Dependent Characters <-> JIS Conversion.  
 [(problem details)](http://support.microsoft.com/default.aspx?scid=kb;ja;JP170559)  
