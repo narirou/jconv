@@ -1,3 +1,5 @@
+'use strict';
+
 var fs     = require( 'fs' ),
 	should = require( 'should' ),
 	jconv  = require( __dirname + '/../' );

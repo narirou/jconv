@@ -1,3 +1,5 @@
+'use strict';
+
 var fs        = require( 'fs' ),
 	Benchmark = require( 'benchmark' ),
 	jconv     = require( __dirname + '/../jconv.min' ),
@@ -70,6 +72,18 @@ function writeLog() {
 	fs.writeFileSync( chartPath + 'speedLog.txt', logText );
 }
 
+// Unicode
+speedTest( 'UTF8', 'UNICODE' );
+speedTest( 'SJIS', 'UNICODE' );
+speedTest( 'JIS', 'UNICODE' );
+speedTest( 'EUCJP', 'UNICODE' );
+
+speedTest( 'UNICODE', 'UTF8' );
+speedTest( 'UNICODE', 'SJIS' );
+speedTest( 'UNICODE', 'JIS' );
+speedTest( 'UNICODE', 'EUCJP' );
+
+// Basics
 speedTest( 'UTF8', 'SJIS' );
 speedTest( 'UTF8', 'JIS' );
 speedTest( 'UTF8', 'EUCJP' );
@@ -85,8 +99,5 @@ speedTest( 'JIS', 'EUCJP' );
 speedTest( 'EUCJP', 'UTF8' );
 speedTest( 'EUCJP', 'SJIS' );
 speedTest( 'EUCJP', 'JIS' );
-
-speedTest( 'UTF8', 'UNICODE' );
-speedTest( 'UNICODE', 'UTF8' );
 
 writeLog();

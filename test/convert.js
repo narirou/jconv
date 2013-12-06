@@ -1,8 +1,10 @@
+'use strict';
+
 var fs    = require( 'fs' ),
 	jconv = require( __dirname + '/../' );
 
 var inputPath  = __dirname + '/input/ALL/',
-	outputPath = __dirname + '/output/';
+	outputPath = __dirname + '/converted/';
 
 var internalEncoding = {
 	'UNICODE': 'UCS2',
@@ -29,21 +31,30 @@ function convertTest( from, to ) {
 	return converted;
 }
 
-convertTest( 'UTF8', 'SJIS' );
-convertTest( 'UTF8', 'JIS' );
-convertTest( 'UTF8', 'EUCJP' );
+// Unicode
+// convertTest( 'UTF8', 'UNICODE' );
+// convertTest( 'SJIS', 'UNICODE' );
+// convertTest( 'JIS', 'UNICODE' );
+// convertTest( 'EUCJP', 'UNICODE' );
 
-convertTest( 'SJIS', 'UTF8' );
-convertTest( 'SJIS', 'JIS' );
-convertTest( 'SJIS', 'EUCJP' );
+// convertTest( 'UNICODE', 'UTF8' );
+// convertTest( 'UNICODE', 'SJIS' );
+// convertTest( 'UNICODE', 'JIS' );
+convertTest( 'UNICODE', 'EUCJP' );
 
-convertTest( 'JIS', 'UTF8' );
-convertTest( 'JIS', 'SJIS' );
-convertTest( 'JIS', 'EUCJP' );
+// Basics
+// convertTest( 'UTF8', 'SJIS' );
+// convertTest( 'UTF8', 'JIS' );
+// convertTest( 'UTF8', 'EUCJP' );
 
-convertTest( 'EUCJP', 'UTF8' );
-convertTest( 'EUCJP', 'SJIS' );
-convertTest( 'EUCJP', 'JIS' );
+// convertTest( 'SJIS', 'UTF8' );
+// convertTest( 'SJIS', 'JIS' );
+// convertTest( 'SJIS', 'EUCJP' );
 
-convertTest( 'UTF8', 'UNICODE' );
-convertTest( 'UNICODE', 'UTF8' );
+// convertTest( 'JIS', 'UTF8' );
+// convertTest( 'JIS', 'SJIS' );
+// convertTest( 'JIS', 'EUCJP' );
+
+// convertTest( 'EUCJP', 'UTF8' );
+// convertTest( 'EUCJP', 'SJIS' );
+// convertTest( 'EUCJP', 'JIS' );
