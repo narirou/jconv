@@ -6,72 +6,117 @@
 		<script src="./speedLog.js"></script>
 		<meta name="viewport" content="initial-scale=1, user-scalable=no">
 		<style type="text/css">
+			body {
+				margin: 70px 20px;
+			}
 			canvas {
-				margin-top: 30px;
+				margin: 30px 0;
 			}
 		</style>
 	</head>
 	<body>
-		<canvas id="canvas" height="450" width="1200"></canvas>
+		<h1>unicode</h1>
+		<canvas id="unicode" height="450" width="1200"></canvas>
+
+		<h1>basic</h1>
+		<canvas id="basic" height="450" width="1200"></canvas>
 	<script>
 		var logs = JSON.parse( speedLog );
-		var logLabels = [];
-		var logJconv = [];
-		var logIconv = [];
+
+		var logLabels = {
+			basic: [],
+			unicode: []
+		};
+
+		var logJconv = {
+			basic: [],
+			unicode: []
+		};
+
+		var logIconv = {
+			basic: [],
+			unicode: []
+		};
 
 		for( var key in logs ) {
 			var log = logs[ key ];
 
-			logJconv.push( log[ 'jconv' ] );
-			logIconv.push( log[ 'iconv' ] );
-			logLabels.push( key.replace( /\[ (.+) \]/, '$1' ) );
+			if( /UNICODE/.test( key ) ) {
+				logJconv.unicode.push( log[ 'jconv' ] );
+				logIconv.unicode.push( log[ 'iconv' ] );
+				logLabels.unicode.push( key.replace( /\[ (.+) \]/, '$1' ) );
+			}
+			else {
+				logJconv.basic.push( log[ 'jconv' ] );
+				logIconv.basic.push( log[ 'iconv' ] );
+				logLabels.basic.push( key.replace( /\[ (.+) \]/, '$1' ) );
+			}
 		}
 
 		var chartData = {
-			labels : logLabels,
-			datasets : [
-				{
-					fillColor : 'rgba(220,220,220,0.5)',
-					strokeColor : 'rgba(220,220,220,0.8)',
-					data : logIconv
-				},
-				{
-					fillColor : 'rgba(101,159,194,0.4)',
-					strokeColor : 'rgba(101,159,194,0.7)',
-					data : logJconv
-				}
-			]
+			basic: {
+				labels : logLabels.basic,
+				datasets : [
+					{
+						fillColor : 'rgba(220,220,220,0.5)',
+						strokeColor : 'rgba(220,220,220,0.8)',
+						data : logIconv.basic
+					},
+					{
+						fillColor : 'rgba(101,159,194,0.4)',
+						strokeColor : 'rgba(101,159,194,0.7)',
+						data : logJconv.basic
+					}
+				]
+			},
+			unicode: {
+				labels : logLabels.unicode,
+				datasets : [
+					{
+						fillColor : 'rgba(220,220,220,0.5)',
+						strokeColor : 'rgba(220,220,220,0.8)',
+						data : logIconv.unicode
+					},
+					{
+						fillColor : 'rgba(101,159,194,0.4)',
+						strokeColor : 'rgba(101,159,194,0.7)',
+						data : logJconv.unicode
+					}
+				]
+			}
 		};
 
 		var chartOption = {
-			scaleOverlay : false,
-			scaleOverride : true,
-			scaleSteps : 10,
-			scaleStepWidth : 80,
-			scaleStartValue : 0,
-			scaleLineColor : 'rgba(0,0,0,.1)',
-			scaleLineWidth : 1,
-			scaleShowLabels : true,
-			scaleLabel : '<%=value%> ops/sec',
-			scaleFontFamily : 'Arial',
-			scaleFontSize : 12,
-			scaleFontStyle : 'normal',
-			scaleFontColor : '#333',
-			scaleShowGridLines : true,
-			scaleGridLineWidth : 1,
-			barShowStroke : true,
-			barStrokeWidth : 1,
-			barValueSpacing : 15,
-			barDatasetSpacing : 12,
-			animation : true,
-			animationSteps : 60,
-			animationEasing : 'easeOutQuart',
-			onAnimationComplete : null
+			scaleOverlay:        false,
+			scaleOverride:       true,
+			scaleSteps:          10,
+			scaleStepWidth:      80,
+			scaleStartValue:     0,
+			scaleLineColor:      'rgba(0,0,0,.1)',
+			scaleLineWidth:      1,
+			scaleShowLabels:     true,
+			scaleLabel:          '<%=value%> ops/sec',
+			scaleFontFamily:     'Arial',
+			scaleFontSize:       12,
+			scaleFontStyle:      'normal',
+			scaleFontColor:      '#333',
+			scaleShowGridLines:  true,
+			scaleGridLineWidth:  1,
+			barShowStroke:       true,
+			barStrokeWidth:      1,
+			barValueSpacing:     15,
+			barDatasetSpacing:   12,
+			animation:           true,
+			animationSteps:      60,
+			animationEasing:     'easeOutQuart',
+			onAnimationComplete: null
 		};
 
-		var ctx = document.getElementById( 'canvas' ).getContext( '2d' );
+		var chartUnicode = new Chart( document.getElementById( 'unicode' ).getContext( '2d' ) )
+			.Bar( chartData.unicode, chartOption );
 
-		var chart = new Chart( ctx ).Bar( chartData, chartOption );
+		var chartBasic = new Chart( document.getElementById( 'basic' ).getContext( '2d' ) )
+			.Bar( chartData.basic, chartOption );
 	</script>
 	</body>
 </html>

@@ -1,48 +1,80 @@
+[ UTF8 -> UNICODE ]
+jconv x 469 ops/sec ±1.43% (90 runs sampled)
+iconv x 384 ops/sec ±1.42% (92 runs sampled)
+Fastest is jconv
+[ SJIS -> UNICODE ]
+jconv x 667 ops/sec ±1.55% (92 runs sampled)
+iconv x 259 ops/sec ±1.43% (89 runs sampled)
+Fastest is jconv
+[ JIS -> UNICODE ]
+jconv x 529 ops/sec ±1.85% (91 runs sampled)
+iconv x 282 ops/sec ±1.33% (87 runs sampled)
+Fastest is jconv
+[ EUCJP -> UNICODE ]
+jconv x 627 ops/sec ±1.98% (91 runs sampled)
+iconv x 328 ops/sec ±1.60% (90 runs sampled)
+Fastest is jconv
+[ UNICODE -> UTF8 ]
+jconv x 595 ops/sec ±1.97% (91 runs sampled)
+iconv x 345 ops/sec ±1.97% (90 runs sampled)
+Fastest is jconv
+[ UNICODE -> SJIS ]
+jconv x 256 ops/sec ±1.56% (90 runs sampled)
+iconv x 179 ops/sec ±1.13% (85 runs sampled)
+Fastest is jconv
+[ UNICODE -> JIS ]
+jconv x 243 ops/sec ±1.77% (85 runs sampled)
+iconv x 200 ops/sec ±1.28% (88 runs sampled)
+Fastest is jconv
+[ UNICODE -> EUCJP ]
+jconv x 244 ops/sec ±1.36% (86 runs sampled)
+iconv x 222 ops/sec ±1.50% (90 runs sampled)
+Fastest is jconv
 [ UTF8 -> SJIS ]
-jconv x 209 ops/sec ±1.08% (84 runs sampled)
-iconv x 168 ops/sec ±1.19% (81 runs sampled)
+jconv x 209 ops/sec ±1.14% (84 runs sampled)
+iconv x 165 ops/sec ±1.17% (87 runs sampled)
 Fastest is jconv
 [ UTF8 -> JIS ]
-jconv x 201 ops/sec ±1.13% (88 runs sampled)
-iconv x 187 ops/sec ±1.15% (82 runs sampled)
+jconv x 202 ops/sec ±1.10% (88 runs sampled)
+iconv x 187 ops/sec ±0.95% (82 runs sampled)
 Fastest is jconv
 [ UTF8 -> EUCJP ]
-jconv x 203 ops/sec ±1.11% (82 runs sampled)
-iconv x 206 ops/sec ±1.09% (83 runs sampled)
+jconv x 202 ops/sec ±1.32% (89 runs sampled)
+iconv x 205 ops/sec ±0.84% (89 runs sampled)
 Fastest is iconv
 [ SJIS -> UTF8 ]
-jconv x 402 ops/sec ±1.82% (91 runs sampled)
-iconv x 221 ops/sec ±1.90% (89 runs sampled)
+jconv x 400 ops/sec ±1.75% (90 runs sampled)
+iconv x 225 ops/sec ±0.42% (84 runs sampled)
 Fastest is jconv
 [ SJIS -> JIS ]
-jconv x 361 ops/sec ±1.42% (89 runs sampled)
-iconv x 155 ops/sec ±1.37% (82 runs sampled)
+jconv x 362 ops/sec ±1.52% (91 runs sampled)
+iconv x 155 ops/sec ±1.10% (82 runs sampled)
 Fastest is jconv
 [ SJIS -> EUCJP ]
-jconv x 416 ops/sec ±1.71% (87 runs sampled)
-iconv x 164 ops/sec ±1.27% (83 runs sampled)
+jconv x 424 ops/sec ±1.87% (93 runs sampled)
+iconv x 168 ops/sec ±1.19% (88 runs sampled)
 Fastest is jconv
 [ JIS -> UTF8 ]
-jconv x 369 ops/sec ±2.40% (88 runs sampled)
-iconv x 232 ops/sec ±1.73% (88 runs sampled)
+jconv x 381 ops/sec ±2.11% (91 runs sampled)
+iconv x 241 ops/sec ±1.61% (90 runs sampled)
 Fastest is jconv
 [ JIS -> SJIS ]
-jconv x 331 ops/sec ±1.80% (85 runs sampled)
-iconv x 148 ops/sec ±1.28% (86 runs sampled)
+jconv x 331 ops/sec ±1.74% (92 runs sampled)
+iconv x 150 ops/sec ±0.87% (79 runs sampled)
 Fastest is jconv
 [ JIS -> EUCJP ]
-jconv x 696 ops/sec ±2.14% (91 runs sampled)
-iconv x 178 ops/sec ±1.27% (85 runs sampled)
+jconv x 695 ops/sec ±2.13% (93 runs sampled)
+iconv x 179 ops/sec ±1.34% (86 runs sampled)
 Fastest is jconv
 [ EUCJP -> UTF8 ]
-jconv x 396 ops/sec ±2.26% (89 runs sampled)
-iconv x 272 ops/sec ±1.67% (85 runs sampled)
+jconv x 408 ops/sec ±2.05% (89 runs sampled)
+iconv x 273 ops/sec ±1.94% (89 runs sampled)
 Fastest is jconv
 [ EUCJP -> SJIS ]
-jconv x 340 ops/sec ±1.61% (89 runs sampled)
-iconv x 161 ops/sec ±1.13% (85 runs sampled)
+jconv x 338 ops/sec ±1.81% (89 runs sampled)
+iconv x 160 ops/sec ±1.31% (84 runs sampled)
 Fastest is jconv
 [ EUCJP -> JIS ]
-jconv x 521 ops/sec ±1.79% (91 runs sampled)
-iconv x 179 ops/sec ±1.25% (85 runs sampled)
+jconv x 521 ops/sec ±1.60% (92 runs sampled)
+iconv x 178 ops/sec ±1.34% (85 runs sampled)
 Fastest is jconv
