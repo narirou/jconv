@@ -30,5 +30,6 @@
     "grunt-closurecompiler": "*",
     "grunt-mocha-test": "*"
   },
+  "readmeFilename": "README.md",
   "license": "MIT"
 }
