@@ -37,12 +37,13 @@ jconv.defineEncoding = function( obj ) {
 };
 
 jconv.convert = function( buf, from, to ) {
-	if( ! to ) {
+	from = getName( from );
+	to   = getName( to );
+
+	if( ! from || ! to ) {
 		throw new Error( 'Encoding not recognized.' );
 	}
 
-	from = getName( from );
-	to   = getName( to );
 	if( from === to ) {
 		return buf;
 	}
@@ -68,8 +69,11 @@ jconv.encode = function( str, to ) {
 	return jconv.convert( str, 'UTF8', to );
 };
 
+jconv.encodingExists = function( encoding ) {
+	return getName( encoding ) ? true : false;
+};
+
 function getName( name ) {
-	if( ! name ) return 'UTF8';
 	switch( name.toUpperCase() ) {
 		case 'WINDOWS-31J':
 		case 'CP932':
@@ -95,7 +99,7 @@ function getName( name ) {
 		case 'UTF-16LE':
 			return 'UNICODE';
 		default:
-			throw new Error( 'Encoding not recognized.' );
+			return '';
 	}
 }
 

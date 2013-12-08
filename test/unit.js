@@ -19,14 +19,35 @@ function check( type, from, to ) {
 	});
 }
 
-// jconv.decode, jconv.encode function
+// jconv.encodingExists
+describe( 'jconv.encodingExists', function() {
+	it( '# exist', function() {
+		var enc = jconv.encodingExists( 'UTF8' );
+
+		should( enc ).eql( true );
+	});
+
+	it( '# not exists', function() {
+		var enc = jconv.encodingExists( 'BIG5' );
+
+		should( enc ).eql( false );
+	});
+
+	it( '# not exists', function() {
+		var enc = jconv.encodingExists( '' );
+
+		should( enc ).eql( false );
+	});
+});
+
+// jconv.decode, jconv.encode
 describe( 'jconv.decode, jconv.encode', function() {
-	it( '#iconv-lite Function', function() {
+	it( '# should work properly', function() {
 		var inputString = '君よ知るや南の国';
 		var jisBuffer = jconv.encode( inputString, 'JIS' );
 		var utfString = jconv.decode( jisBuffer, 'JIS' );
 
-		should( utfString ).eql( inputString )
+		should( utfString ).eql( inputString );
 	});
 });
 
