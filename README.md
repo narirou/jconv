@@ -4,11 +4,14 @@ jconv
 > Pure Javascript Iconv for Japanese encodings.
 
 [![Build Status](https://secure.travis-ci.org/narirou/jconv.png?branch=master)](https://travis-ci.org/narirou/jconv)
+[![NPM version](https://badge.fury.io/js/jconv.png)](http://badge.fury.io/js/jconv)
 
  * This module supported the encoding commonly used in japanese:  
    *Shift_JIS(CP932), ISO-2022-JP(-1), EUC-JP, UTF8, UNICODE(UCS2)* conversion.
  * Pure Javascript, no compile needed.
  * Much faster than [node-iconv](https://github.com/bnoordhuis/node-iconv).
+
+[[Japanese 日本語]](./README.ja.md)
 
 ## Install
 ```
@@ -46,6 +49,9 @@ var buffer = jconv.encode( string, toEncoding );
 * **jconv.encode( inputString, to )**  
     * `return` {Buffer}.  
 
+* **jconv.encodingExists( encodingName )**  
+    * `return` {Boolean}.
+
 ## Speed
 Comparison with node-iconv@2.0.7 by converting [Japanese text](http://www.aozora.gr.jp/cards/000148/files/773_14560.html)
 using [Benchmark.js](https://github.com/bestiejs/benchmark.js).  
@@ -67,6 +73,37 @@ Environment is *Windows7, core i5 2405-S, mem8G, Node 0.10.22*.
   so the specific characters ( ～￠￡∥ etc... ) cannot be round-trip converted by default.  
  This module corrects this difference as much as possible when converting.  
 [(problem details)](http://www8.plala.or.jp/tkubota1/unicode-symbols-map2.html)  
+
+## Development 
+ * Clone Repogitory  
+```
+git clone https://github.com/narirou/jconv.git  
+npm install
+```
+
+ * Generate Tables  
+```
+# This script generates the unicode mapping table module in "tables" folder.
+cd ./generators
+node generate
+```
+
+ * Test
+```
+npm test
+```
+
+ * Speed Test  
+```
+# First, minify the script by closure-compiler. ( need Grunt )  
+grunt minify
+```
+```
+cd ./test  
+node speed  
+# This results are visualized by chart.js.  
+# Plese open "chart/index.html".
+```
 
 ## Based on
  * [iconv-lite](https://github.com/ashtuchkin/iconv-lite) by ashtuchkin.
