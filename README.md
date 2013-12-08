@@ -11,7 +11,7 @@ jconv
  * Pure Javascript, no compile needed.
  * Much faster than [node-iconv](https://github.com/bnoordhuis/node-iconv).
 
-[[Japanese 日本語]](./README.ja.md)
+[[Japanese 日本語]](./READMEja.md)
 
 ## Install
 ```
