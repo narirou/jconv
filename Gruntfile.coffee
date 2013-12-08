@@ -4,7 +4,7 @@ module.exports = ( grunt ) ->
 
 	grunt.initConfig (
 		closurecompiler:
-			build:
+			minify:
 				files:
 					'jconv.min.js': 'jconv.js'
 			options:
@@ -18,6 +18,6 @@ module.exports = ( grunt ) ->
 	grunt.loadNpmTasks 'grunt-closurecompiler'
 	grunt.loadNpmTasks 'grunt-mocha-test'
 
-	grunt.registerTask 'build', ['closurecompiler:build']
+	grunt.registerTask 'minify', ['closurecompiler:minify']
 	grunt.registerTask 'test', ['mochaTest:test']
 
