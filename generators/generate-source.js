@@ -9,12 +9,14 @@
 'use strict';
 
 var fs         = require( 'fs' ),
-	LineReader = require( './linereader' ).LineReader;
+	LineReader = require( __dirname + '/linereader' ).LineReader;
 
-var nrtFile  = fs.readFileSync( './sources/NON-ROUND-TRIP.TXT' ),
+var sourcePath = __dirname + '/sources/';
+
+var nrtFile  = fs.readFileSync( sourcePath + 'NON-ROUND-TRIP.TXT' ),
 	nrtLines = nrtFile.toString().split( '\n' );
 
-var cp932File  = fs.readFileSync( './sources/CP932.TXT' ),
+var cp932File  = fs.readFileSync( sourcePath + 'CP932.TXT' ),
 	cp932Lines = cp932File.toString().split( '\n' );
 
 var COMMENT = /^#/,
@@ -46,7 +48,7 @@ function JIS0208_NEC() {
 		}
 	});
 
-	fs.writeFileSync( './sources/JIS0208-NEC.TXT', outputString );
+	fs.writeFileSync( sourcePath + 'JIS0208-NEC.TXT', outputString );
 
 	console.log( 'JIS0208-NEC source created.' );
 }
@@ -74,7 +76,7 @@ function JIS0208_IBM() {
 		}
 	});
 
-	fs.writeFileSync( './sources/JIS0208-IBM.TXT', outputString );
+	fs.writeFileSync( sourcePath + 'JIS0208-IBM.TXT', outputString );
 
 	console.log( 'JIS0208-IBM source created.' );
 }
@@ -101,7 +103,7 @@ function CP932_IBM() {
 		}
 	});
 
-	fs.writeFileSync( './sources/CP932-IBM-OVERRIDE.TXT', outputString );
+	fs.writeFileSync( sourcePath + 'CP932-IBM-OVERRIDE.TXT', outputString );
 
 	console.log( 'CP932-IBM-OVERRIDE source created.' );
 }
@@ -128,7 +130,7 @@ function CP932_NEC() {
 		}
 	});
 
-	fs.writeFileSync( './sources/CP932-NEC-OVERRIDE.TXT', outputString );
+	fs.writeFileSync( sourcePath + 'CP932-NEC-OVERRIDE.TXT', outputString );
 
 	console.log( 'CP932-NEC-OVERRIDE source created.' );
 }

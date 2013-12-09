@@ -13,40 +13,41 @@
 
 var fs         = require( 'fs' ),
 	async      = require( 'async' ),
-	LineReader = require( './linereader' ).LineReader;
+	LineReader = require( __dirname + '/linereader' ).LineReader;
 
 var files = {
 	'SJIS': [
-		'./sources/CP932.TXT',
+		'CP932.TXT',
 	],
 	'SJISInverted': [
-		'./sources/CP932.TXT',
-		'./sources/CP932-ADD.TXT',
-		'./sources/CP932-NEC-OVERRIDE.TXT',
-		'./sources/CP932-IBM-OVERRIDE.TXT',
+		'CP932.TXT',
+		'CP932-ADD.TXT',
+		'CP932-NEC-OVERRIDE.TXT',
+		'CP932-IBM-OVERRIDE.TXT',
 	],
 	'JIS': [
-		'./sources/JIS0208-ADD.TXT',
-		'./sources/JIS0208.TXT',
-		'./sources/JIS0208-NEC.TXT',
+		'JIS0208-ADD.TXT',
+		'JIS0208.TXT',
+		'JIS0208-NEC.TXT',
 	],
 	'JISInverted': [
-		'./sources/JIS0208.TXT',
-		'./sources/JIS0208-ADD.TXT',
-		'./sources/JIS0208-NEC.TXT',
-		'./sources/JIS0208-IBM.TXT',
+		'JIS0208.TXT',
+		'JIS0208-ADD.TXT',
+		'JIS0208-NEC.TXT',
+		'JIS0208-IBM.TXT',
 	],
 	'JISEXT': [
-		'./sources/JIS0212.TXT',
-		'./sources/JIS0212-ADD.TXT'
+		'JIS0212.TXT',
+		'JIS0212-ADD.TXT'
 	],
 	'JISEXTInverted': [
-		'./sources/JIS0212.TXT',
-		'./sources/JIS0212-ADD.TXT'
+		'JIS0212.TXT',
+		'JIS0212-ADD.TXT'
 	]
 };
 
-var outputPath = '../tables/';
+var outputPath = __dirname + '/../tables/',
+	sourcePath = __dirname + '/sources/';
 
 var COMMENT = /^#/,
 	FORMAT  = /^(U\+|0x|\d\-)([0-9A-Fa-f]+)/;
@@ -57,7 +58,7 @@ function generate( key ) {
 		ws            = fs.createWriteStream( outputPath + key + '.js' );
 
 	async.eachSeries( sources, function( source, next ) {
-		var rs     = fs.createReadStream( source ),
+		var rs     = fs.createReadStream( sourcePath + source ),
 			reader = new LineReader( rs );
 
 		reader.on( 'line', function( line ) {
