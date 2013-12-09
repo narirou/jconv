@@ -1,17 +1,17 @@
 jconv
 ====================
 
-> Pure Javascript Iconv for Japanese encodings.
+> Pure JavaScript Iconv for Japanese encodings.
 
 [![Build Status](https://secure.travis-ci.org/narirou/jconv.png?branch=master)](https://travis-ci.org/narirou/jconv)
 [![NPM version](https://badge.fury.io/js/jconv.png)](http://badge.fury.io/js/jconv)
 
- * This module supported the encoding commonly used in japanese:  
+ * This module supported the encoding commonly used in Japanese Language:  
    *Shift_JIS(CP932), ISO-2022-JP(-1), EUC-JP, UTF8, UNICODE(UCS2)* conversion.
- * Pure Javascript, no compile needed.
+ * Pure Javascript, no need to compile.
  * Much faster than [node-iconv](https://github.com/bnoordhuis/node-iconv).
 
-[[Japanese 日本語]](./READMEja.md)
+[[Japanese 日本語]](https://github.com/narirou/jconv/blob/master/READMEja.md)
 
 ## Install
 ```
@@ -36,21 +36,21 @@ var buffer = jconv.encode( string, toEncoding );
 ```
 
 ## API
+ * **jconv( input, fromEncoding, toEncoding )**  
+ * **jconv.convert( input, fromEncoding, toEncoding )**  
+    * `input` {Buffer} or {String}  
+    * `fromEncoding`, `toEncoding` {String}:  
+       *Shift_JIS(SJIS), ISO-2022-JP(JIS), EUCJP, UTF8, UNICODE(UCS2, UTF16LE)* are available.  
+    * `return` {Buffer}  
 
-* **jconv( input, from, to )**  
-* **jconv.convert( input, from, to )**  
-    * `input` {Buffer} or {String}.  
-    * `from`, `to` {String}: *Shift_JIS(SJIS), ISO-2022-JP(JIS), EUCJP, UTF8, UNICODE(UCS2, UTF16LE)* are available.  
-    * `return` {Buffer}.  
+ * **jconv.decode( inputBuffer, fromEncoding )**  
+    * `return` {String}  
 
-* **jconv.decode( inputBuffer, from )**  
-    * `return` {String}.  
+ * **jconv.encode( inputString, toEncoding )**  
+    * `return` {Buffer}  
 
-* **jconv.encode( inputString, to )**  
-    * `return` {Buffer}.  
-
-* **jconv.encodingExists( encodingName )**  
-    * `return` {Boolean}.
+ * **jconv.encodingExists( encodingName )**  
+    * `return` {Boolean}
 
 ## Speed
 Comparison with node-iconv@2.0.7 by converting [Japanese text](http://www.aozora.gr.jp/cards/000148/files/773_14560.html)
@@ -59,9 +59,8 @@ Environment is *Windows7, core i5 2405-S, mem8G, Node 0.10.22*.
 (Please check on your hardware.)  
 `Gray`: iconv, `Blue`: jconv (higher is better)  
 
-![jconv - encoding speed test chart](./test/chart/speedLog.png)
-[[latest log]](./test/chart/speedLog.txt)  
-<!-- https://raw.github.com/narirou/jconv/master/ -->
+![jconv - encoding speed test chart](https://raw.github.com/narirou/jconv/master/test/chart/speedLog.png)
+[[latest log]](https://github.com/narirou/jconv/blob/master/test/chart/speedLog.txt)  
 
 ## Encodings
  * Supported: Shift_JIS(CP932), ISO-2022-JP(-1), EUC-JP, UTF8, UNICODE(UCS2).  
@@ -75,32 +74,32 @@ Environment is *Windows7, core i5 2405-S, mem8G, Node 0.10.22*.
 [(problem details)](http://www8.plala.or.jp/tkubota1/unicode-symbols-map2.html)  
 
 ## Development 
- * Clone Repogitory  
+ * Clone Repository  
 ```
 git clone https://github.com/narirou/jconv.git  
+cd jconv  
 npm install
 ```
 
  * Generate Tables  
 ```
-# This script generates the unicode mapping table module in "tables" folder.
-cd ./generators
-node generate
+# generates the unicode mapping table module in "tables" folder.
+node generators/generate-source  
+node generators/generate
 ```
 
  * Test
 ```
-npm test
+grunt test
 ```
 
  * Speed Test  
 ```
-# First, minify the script by closure-compiler. ( need Grunt )  
+# First, minify the script by closure-compiler.
 grunt minify
 ```
-```
-cd ./test  
-node speed  
+``` 
+node test/speed  
 # This results are visualized by chart.js.  
 # Plese open "chart/index.html".
 ```
