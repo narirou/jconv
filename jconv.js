@@ -226,7 +226,7 @@ jconv.defineEncoding({
 			unknownJis     = tableJisInv[ unknown2 ];
 
 		var len      = buf.length,
-			codeBuf  = new Buffer( len * 3 + 4 ),
+			jisBuf   = new Buffer( len * 3 + 4 ),
 			offset   = 0,
 			unicode,
 			sequence = 0;
@@ -241,21 +241,21 @@ jconv.defineEncoding({
 			if( unicode < 0x80 ) {
 				if( sequence !== 0 ) {
 					sequence = 0;
-					codeBuf[ offset++ ] = 0x1B;
-					codeBuf[ offset++ ] = 0x28;
-					codeBuf[ offset++ ] = 0x42;
+					jisBuf[ offset++ ] = 0x1B;
+					jisBuf[ offset++ ] = 0x28;
+					jisBuf[ offset++ ] = 0x42;
 				}
-				codeBuf[ offset++ ] = unicode;
+				jisBuf[ offset++ ] = unicode;
 			}
 			// HALFWIDTH_KATAKANA
 			else if( 0xFF61 <= unicode && unicode <= 0xFF9F ) {
 				if( sequence !== 1 ) {
 					sequence = 1;
-					codeBuf[ offset++ ] = 0x1B;
-					codeBuf[ offset++ ] = 0x28;
-					codeBuf[ offset++ ] = 0x49;
+					jisBuf[ offset++ ] = 0x1B;
+					jisBuf[ offset++ ] = 0x28;
+					jisBuf[ offset++ ] = 0x49;
 				}
-				codeBuf[ offset++ ] = unicode - 0xFF40;
+				jisBuf[ offset++ ] = unicode - 0xFF40;
 			}
 			else {
 				var code = tableJisInv[ unicode ];
@@ -263,12 +263,12 @@ jconv.defineEncoding({
 					// KANJI
 					if( sequence !== 2 ) {
 						sequence = 2;
-						codeBuf[ offset++ ] = 0x1B;
-						codeBuf[ offset++ ] = 0x24;
-						codeBuf[ offset++ ] = 0x42;
+						jisBuf[ offset++ ] = 0x1B;
+						jisBuf[ offset++ ] = 0x24;
+						jisBuf[ offset++ ] = 0x42;
 					}
-					codeBuf[ offset++ ] = code >> 8;
-					codeBuf[ offset++ ] = code & 0xFF;
+					jisBuf[ offset++ ] = code >> 8;
+					jisBuf[ offset++ ] = code & 0xFF;
 				}
 				else {
 					var ext = tableJisExtInv[ unicode ];
@@ -276,24 +276,24 @@ jconv.defineEncoding({
 						// EXTENSION
 						if( sequence !== 3 ) {
 							sequence = 3;
-							codeBuf[ offset++ ] = 0x1B;
-							codeBuf[ offset++ ] = 0x24;
-							codeBuf[ offset++ ] = 0x28;
-							codeBuf[ offset++ ] = 0x44;
+							jisBuf[ offset++ ] = 0x1B;
+							jisBuf[ offset++ ] = 0x24;
+							jisBuf[ offset++ ] = 0x28;
+							jisBuf[ offset++ ] = 0x44;
 						}
-						codeBuf[ offset++ ] = ext >> 8;
-						codeBuf[ offset++ ] = ext & 0xFF;
+						jisBuf[ offset++ ] = ext >> 8;
+						jisBuf[ offset++ ] = ext & 0xFF;
 					}
 					else {
 						// UNKNOWN
 						if( sequence !== 2 ) {
 							sequence = 2;
-							codeBuf[ offset++ ] = 0x1B;
-							codeBuf[ offset++ ] = 0x24;
-							codeBuf[ offset++ ] = 0x42;
+							jisBuf[ offset++ ] = 0x1B;
+							jisBuf[ offset++ ] = 0x24;
+							jisBuf[ offset++ ] = 0x42;
 						}
-						codeBuf[ offset++ ] = unknownJis >> 8;
-						codeBuf[ offset++ ] = unknownJis & 0xFF;
+						jisBuf[ offset++ ] = unknownJis >> 8;
+						jisBuf[ offset++ ] = unknownJis & 0xFF;
 					}
 				}
 			}
@@ -302,12 +302,12 @@ jconv.defineEncoding({
 		// Add ASCII ESC
 		if( sequence !== 0 ) {
 			sequence = 0;
-			codeBuf[ offset++ ] = 0x1B;
-			codeBuf[ offset++ ] = 0x28;
-			codeBuf[ offset++ ] = 0x42;
+			jisBuf[ offset++ ] = 0x1B;
+			jisBuf[ offset++ ] = 0x28;
+			jisBuf[ offset++ ] = 0x42;
 		}
 
-		return codeBuf.slice( 0, offset );
+		return	jisBuf.slice( 0, offset );
 	}
 });
 
@@ -321,7 +321,7 @@ jconv.defineEncoding({
 			unknownJis     = tableJisInv[ unknown2 ];
 
 		var len     = buf.length,
-			codeBuf = new Buffer( len * 2 ),
+			eucBuf  = new Buffer( len * 2 ),
 			offset  = 0,
 			unicode,
 			sequence;
@@ -334,37 +334,37 @@ jconv.defineEncoding({
 
 			// ASCII
 			if( unicode < 0x80 ) {
-				codeBuf[ offset++ ] = unicode;
+				eucBuf[ offset++ ] = unicode;
 			}
 			// HALFWIDTH_KATAKANA
 			else if( 0xFF61 <= unicode && unicode <= 0xFF9F ) {
-				codeBuf[ offset++ ] = 0x8E;
-				codeBuf[ offset++ ] = unicode - 0xFFC0;
+				eucBuf[ offset++ ] = 0x8E;
+				eucBuf[ offset++ ] = unicode - 0xFFC0;
 			}
 			else {
 				// KANJI
 				var jis = tableJisInv[ unicode ];
 				if( jis ) {
-					codeBuf[ offset++ ] = ( jis >> 8 ) - 0x80;
-					codeBuf[ offset++ ] = ( jis & 0xFF ) - 0x80;
+					eucBuf[ offset++ ] = ( jis >> 8 ) - 0x80;
+					eucBuf[ offset++ ] = ( jis & 0xFF ) - 0x80;
 				}
 				else {
 					// EXTENSION
 					var ext = tableJisExtInv[ unicode ];
 					if( ext ) {
-						codeBuf[ offset++ ] = 0x8F;
-						codeBuf[ offset++ ] = ( ext >> 8 ) - 0x80;
-						codeBuf[ offset++ ] = ( ext & 0xFF ) - 0x80;
+						eucBuf[ offset++ ] = 0x8F;
+						eucBuf[ offset++ ] = ( ext >> 8 ) - 0x80;
+						eucBuf[ offset++ ] = ( ext & 0xFF ) - 0x80;
 					}
 					// UNKNOWN
 					else {
-						codeBuf[ offset++ ] = ( unknownJis >> 8 ) - 0x80;
-						codeBuf[ offset++ ] = ( unknownJis & 0xFF ) - 0x80;
+						eucBuf[ offset++ ] = ( unknownJis >> 8 ) - 0x80;
+						eucBuf[ offset++ ] = ( unknownJis & 0xFF ) - 0x80;
 					}
 				}
 			}
 		}
-		return codeBuf.slice( 0, offset );
+		return eucBuf.slice( 0, offset );
 	}
 });
 
@@ -463,7 +463,7 @@ jconv.defineEncoding({
 			unknownJis     = tableJisInv[ unknown2 ];
 
 		var len      = buf.length,
-			codeBuf  = new Buffer( len * 3 + 4 ),
+			jisBuf   = new Buffer( len * 3 + 4 ),
 			offset   = 0,
 			unicode,
 			sequence = 0;
@@ -490,21 +490,21 @@ jconv.defineEncoding({
 			if( unicode < 0x80 ) {
 				if( sequence !== 0 ) {
 					sequence = 0;
-					codeBuf[ offset++ ] = 0x1B;
-					codeBuf[ offset++ ] = 0x28;
-					codeBuf[ offset++ ] = 0x42;
+					jisBuf[ offset++ ] = 0x1B;
+					jisBuf[ offset++ ] = 0x28;
+					jisBuf[ offset++ ] = 0x42;
 				}
-				codeBuf[ offset++ ] = unicode;
+				jisBuf[ offset++ ] = unicode;
 			}
 			// HALFWIDTH_KATAKANA
 			else if( 0xFF61 <= unicode && unicode <= 0xFF9F ) {
 				if( sequence !== 1 ) {
 					sequence = 1;
-					codeBuf[ offset++ ] = 0x1B;
-					codeBuf[ offset++ ] = 0x28;
-					codeBuf[ offset++ ] = 0x49;
+					jisBuf[ offset++ ] = 0x1B;
+					jisBuf[ offset++ ] = 0x28;
+					jisBuf[ offset++ ] = 0x49;
 				}
-				codeBuf[ offset++ ] = unicode - 0xFF40;
+				jisBuf[ offset++ ] = unicode - 0xFF40;
 			}
 			else {
 				var code = tableJisInv[ unicode ];
@@ -512,12 +512,12 @@ jconv.defineEncoding({
 					// KANJI
 					if( sequence !== 2 ) {
 						sequence = 2;
-						codeBuf[ offset++ ] = 0x1B;
-						codeBuf[ offset++ ] = 0x24;
-						codeBuf[ offset++ ] = 0x42;
+						jisBuf[ offset++ ] = 0x1B;
+						jisBuf[ offset++ ] = 0x24;
+						jisBuf[ offset++ ] = 0x42;
 					}
-					codeBuf[ offset++ ] = code >> 8;
-					codeBuf[ offset++ ] = code & 0xFF;
+					jisBuf[ offset++ ] = code >> 8;
+					jisBuf[ offset++ ] = code & 0xFF;
 				}
 				else {
 					var ext = tableJisExtInv[ unicode ];
@@ -525,24 +525,24 @@ jconv.defineEncoding({
 						// EXTENSION
 						if( sequence !== 3 ) {
 							sequence = 3;
-							codeBuf[ offset++ ] = 0x1B;
-							codeBuf[ offset++ ] = 0x24;
-							codeBuf[ offset++ ] = 0x28;
-							codeBuf[ offset++ ] = 0x44;
+							jisBuf[ offset++ ] = 0x1B;
+							jisBuf[ offset++ ] = 0x24;
+							jisBuf[ offset++ ] = 0x28;
+							jisBuf[ offset++ ] = 0x44;
 						}
-						codeBuf[ offset++ ] = ext >> 8;
-						codeBuf[ offset++ ] = ext & 0xFF;
+						jisBuf[ offset++ ] = ext >> 8;
+						jisBuf[ offset++ ] = ext & 0xFF;
 					}
 					else {
 						// UNKNOWN
 						if( sequence !== 2 ) {
 							sequence = 2;
-							codeBuf[ offset++ ] = 0x1B;
-							codeBuf[ offset++ ] = 0x24;
-							codeBuf[ offset++ ] = 0x42;
+							jisBuf[ offset++ ] = 0x1B;
+							jisBuf[ offset++ ] = 0x24;
+							jisBuf[ offset++ ] = 0x42;
 						}
-						codeBuf[ offset++ ] = unknownJis >> 8;
-						codeBuf[ offset++ ] = unknownJis & 0xFF;
+						jisBuf[ offset++ ] = unknownJis >> 8;
+						jisBuf[ offset++ ] = unknownJis & 0xFF;
 					}
 				}
 			}
@@ -551,11 +551,11 @@ jconv.defineEncoding({
 		// Add ASCII ESC
 		if( sequence !== 0 ) {
 			sequence = 0;
-			codeBuf[ offset++ ] = 0x1B;
-			codeBuf[ offset++ ] = 0x28;
-			codeBuf[ offset++ ] = 0x42;
+			jisBuf[ offset++ ] = 0x1B;
+			jisBuf[ offset++ ] = 0x28;
+			jisBuf[ offset++ ] = 0x42;
 		}
-		return codeBuf.slice( 0, offset );
+		return jisBuf.slice( 0, offset );
 	}
 });
 
@@ -569,7 +569,7 @@ jconv.defineEncoding({
 			unknownJis     = tableJisInv[ unknown2 ];
 
 		var len     = buf.length,
-			codeBuf = new Buffer( len * 2 ),
+			eucBuf  = new Buffer( len * 2 ),
 			offset  = 0,
 			unicode,
 			sequence;
@@ -594,37 +594,37 @@ jconv.defineEncoding({
 
 			// ASCII
 			if( unicode < 0x80 ) {
-				codeBuf[ offset++ ] = unicode;
+				eucBuf[ offset++ ] = unicode;
 			}
 			// HALFWIDTH_KATAKANA
 			else if( 0xFF61 <= unicode && unicode <= 0xFF9F ) {
-				codeBuf[ offset++ ] = 0x8E;
-				codeBuf[ offset++ ] = unicode - 0xFFC0;
+				eucBuf[ offset++ ] = 0x8E;
+				eucBuf[ offset++ ] = unicode - 0xFFC0;
 			}
 			else {
 				// KANJI
 				var jis = tableJisInv[ unicode ];
 				if( jis ) {
-					codeBuf[ offset++ ] = ( jis >> 8 ) - 0x80;
-					codeBuf[ offset++ ] = ( jis & 0xFF ) - 0x80;
+					eucBuf[ offset++ ] = ( jis >> 8 ) - 0x80;
+					eucBuf[ offset++ ] = ( jis & 0xFF ) - 0x80;
 				}
 				else {
 					// EXTENSION
 					var ext = tableJisExtInv[ unicode ];
 					if( ext ) {
-						codeBuf[ offset++ ] = 0x8F;
-						codeBuf[ offset++ ] = ( ext >> 8 ) - 0x80;
-						codeBuf[ offset++ ] = ( ext & 0xFF ) - 0x80;
+						eucBuf[ offset++ ] = 0x8F;
+						eucBuf[ offset++ ] = ( ext >> 8 ) - 0x80;
+						eucBuf[ offset++ ] = ( ext & 0xFF ) - 0x80;
 					}
 					// UNKNOWN
 					else {
-						codeBuf[ offset++ ] = ( unknownJis >> 8 ) - 0x80;
-						codeBuf[ offset++ ] = ( unknownJis & 0xFF ) - 0x80;
+						eucBuf[ offset++ ] = ( unknownJis >> 8 ) - 0x80;
+						eucBuf[ offset++ ] = ( unknownJis & 0xFF ) - 0x80;
 					}
 				}
 			}
 		}
-		return codeBuf.slice( 0, offset );
+		return eucBuf.slice( 0, offset );
 	}
 });
 
@@ -707,7 +707,7 @@ jconv.defineEncoding({
 			tableJisInv = tables[ 'JISInverted' ];
 
 		var len      = buf.length,
-			codeBuf  = new Buffer( len * 3 + 4 ),
+			jisBuf   = new Buffer( len * 3 + 4 ),
 			offset   = 0,
 			sequence = 0;
 
@@ -718,29 +718,29 @@ jconv.defineEncoding({
 			if( buf1 < 0x80 ) {
 				if( sequence !== 0 ) {
 					sequence = 0;
-					codeBuf[ offset++ ] = 0x1B;
-					codeBuf[ offset++ ] = 0x28;
-					codeBuf[ offset++ ] = 0x42;
+					jisBuf[ offset++ ] = 0x1B;
+					jisBuf[ offset++ ] = 0x28;
+					jisBuf[ offset++ ] = 0x42;
 				}
-				codeBuf[ offset++ ] = buf1;
+				jisBuf[ offset++ ] = buf1;
 			}
 			// HALFWIDTH_KATAKANA
 			else if( 0xA1 <= buf1 && buf1 <= 0xDF ) {
 				if( sequence !== 1 ) {
 					sequence = 1;
-					codeBuf[ offset++ ] = 0x1B;
-					codeBuf[ offset++ ] = 0x28;
-					codeBuf[ offset++ ] = 0x49;
+					jisBuf[ offset++ ] = 0x1B;
+					jisBuf[ offset++ ] = 0x28;
+					jisBuf[ offset++ ] = 0x49;
 				}
-				codeBuf[ offset++ ] = buf1 - 0x80;
+				jisBuf[ offset++ ] = buf1 - 0x80;
 			}
 			// KANJI
 			else if( buf1 <= 0xEE ) {
 				if( sequence !== 2 ) {
 					sequence = 2;
-					codeBuf[ offset++ ] = 0x1B;
-					codeBuf[ offset++ ] = 0x24;
-					codeBuf[ offset++ ] = 0x42;
+					jisBuf[ offset++ ] = 0x1B;
+					jisBuf[ offset++ ] = 0x24;
+					jisBuf[ offset++ ] = 0x42;
 				}
 				var buf2 = buf[ i++ ];
 				buf1 <<= 1;
@@ -767,34 +767,34 @@ jconv.defineEncoding({
 					}
 					buf2 -= 0x7E;
 				}
-				codeBuf[ offset++ ] = buf1;
-				codeBuf[ offset++ ] = buf2;
+				jisBuf[ offset++ ] = buf1;
+				jisBuf[ offset++ ] = buf2;
 			}
 			// IBM EXTENSION -> the other
 			else if( buf1 >= 0xFA ) {
 				if( sequence !== 2 ) {
 					sequence = 2;
-					codeBuf[ offset++ ] = 0x1B;
-					codeBuf[ offset++ ] = 0x24;
-					codeBuf[ offset++ ] = 0x42;
+					jisBuf[ offset++ ] = 0x1B;
+					jisBuf[ offset++ ] = 0x24;
+					jisBuf[ offset++ ] = 0x42;
 				}
 				var sjis    = ( buf1 << 8 ) + buf[ i++ ],
 					unicode = tableSjis[ sjis ] || unknown2,
 					code    = tableJisInv[ unicode ];
 
-				codeBuf[ offset++ ] = code >> 8;
-				codeBuf[ offset++ ] = code & 0xFF;
+				jisBuf[ offset++ ] = code >> 8;
+				jisBuf[ offset++ ] = code & 0xFF;
 			}
 		}
 
 		// Add ASCII ESC
 		if( sequence !== 0 ) {
 			sequence = 0;
-			codeBuf[ offset++ ] = 0x1B;
-			codeBuf[ offset++ ] = 0x28;
-			codeBuf[ offset++ ] = 0x42;
+			jisBuf[ offset++ ] = 0x1B;
+			jisBuf[ offset++ ] = 0x28;
+			jisBuf[ offset++ ] = 0x42;
 		}
-		return codeBuf.slice( 0, offset );
+		return jisBuf.slice( 0, offset );
 	}
 });
 
@@ -807,7 +807,7 @@ jconv.defineEncoding({
 			tableJisInv = tables[ 'JISInverted' ];
 
 		var len     = buf.length,
-			codeBuf = new Buffer( len * 2 ),
+			eucBuf  = new Buffer( len * 2 ),
 			offset  = 0;
 
 		for( var i = 0; i < len; ) {
@@ -815,12 +815,12 @@ jconv.defineEncoding({
 
 			// ASCII
 			if( buf1 < 0x80 ) {
-				codeBuf[ offset++ ] = buf1;
+				eucBuf[ offset++ ] = buf1;
 			}
 			// HALFWIDTH_KATAKANA
 			else if( 0xA1 <= buf1 && buf1 <= 0xDF ) {
-				codeBuf[ offset++ ] = 0x8E;
-				codeBuf[ offset++ ] = buf1;
+				eucBuf[ offset++ ] = 0x8E;
+				eucBuf[ offset++ ] = buf1;
 			}
 			// KANJI
 			else if( buf1 <= 0xEE ) {
@@ -849,8 +849,8 @@ jconv.defineEncoding({
 					}
 					buf2 += 0x02;
 				}
-				codeBuf[ offset++ ] = buf1;
-				codeBuf[ offset++ ] = buf2;
+				eucBuf[ offset++ ] = buf1;
+				eucBuf[ offset++ ] = buf2;
 			}
 			// IBM EXTENSION -> the other
 			else if( buf1 >= 0xFA ) {
@@ -858,11 +858,11 @@ jconv.defineEncoding({
 					unicode = tableSjis[ sjis ] || unknown2,
 					jis     = tableJisInv[ unicode ];
 
-				codeBuf[ offset++ ] = ( jis >> 8 ) - 0x80;
-				codeBuf[ offset++ ] = ( jis & 0xFF ) - 0x80;
+				eucBuf[ offset++ ] = ( jis >> 8 ) - 0x80;
+				eucBuf[ offset++ ] = ( jis & 0xFF ) - 0x80;
 			}
 		}
-		return codeBuf.slice( 0, offset );
+		return eucBuf.slice( 0, offset );
 	}
 });
 
@@ -1024,7 +1024,7 @@ jconv.defineEncoding({
 			unknownSjis  = tableSjisInv[ unknown2 ];
 
 		var len      = buf.length,
-			codeBuf  = new Buffer( len * 2 ),
+			sjisBuf  = new Buffer( len * 2 ),
 			offset   = 0,
 			sequence = 0;
 
@@ -1064,11 +1064,11 @@ jconv.defineEncoding({
 			switch( sequence ) {
 				// ASCII
 				case 0:
-					codeBuf[ offset++ ] = buf1;
+					sjisBuf[ offset++ ] = buf1;
 				break;
 				// HALFWIDTH_KATAKANA
 				case 1:
-					codeBuf[ offset++ ] = buf1 + 0x80;
+					sjisBuf[ offset++ ] = buf1 + 0x80;
 				break;
 				// KANJI
 				case 2:
@@ -1107,18 +1107,18 @@ jconv.defineEncoding({
 						buf1 = sjisFixed >> 8;
 						buf2 = sjisFixed & 0xFF;
 					}
-					codeBuf[ offset++ ] = buf1;
-					codeBuf[ offset++ ] = buf2;
+					sjisBuf[ offset++ ] = buf1;
+					sjisBuf[ offset++ ] = buf2;
 				break;
 				// EXTENSION
 				case 3:
-					codeBuf[ offset++ ] = unknownSjis >> 8;
-					codeBuf[ offset++ ] = unknownSjis & 0xFF;
+					sjisBuf[ offset++ ] = unknownSjis >> 8;
+					sjisBuf[ offset++ ] = unknownSjis & 0xFF;
 					i++;
 				break;
 			}
 		}
-		return codeBuf.slice( 0, offset );
+		return sjisBuf.slice( 0, offset );
 	}
 });
 
@@ -1128,7 +1128,7 @@ jconv.defineEncoding({
 
 	convert: function( buf ) {
 		var len      = buf.length,
-			codeBuf  = new Buffer( len * 2 ),
+			eucBuf   = new Buffer( len * 2 ),
 			offset   = 0,
 			sequence = 0;
 
@@ -1168,27 +1168,27 @@ jconv.defineEncoding({
 			switch( sequence ) {
 				// ASCII
 				case 0:
-					codeBuf[ offset++ ] = buf1;
+					eucBuf[ offset++ ] = buf1;
 				break;
 				// HALFWIDTH_KATAKANA
 				case 1:
-					codeBuf[ offset++ ] = 0x8E;
-					codeBuf[ offset++ ] = buf1 + 0x80;
+					eucBuf[ offset++ ] = 0x8E;
+					eucBuf[ offset++ ] = buf1 + 0x80;
 				break;
 				// KANJI
 				case 2:
-					codeBuf[ offset++ ] = buf1 + 0x80;
-					codeBuf[ offset++ ] = buf[ i++ ] + 0x80;
+					eucBuf[ offset++ ] = buf1 + 0x80;
+					eucBuf[ offset++ ] = buf[ i++ ] + 0x80;
 				break;
 				// EXTENSION
 				case 3:
-					codeBuf[ offset++ ] = 0x8F;
-					codeBuf[ offset++ ] = buf1 + 0x80;
-					codeBuf[ offset++ ] = buf[ i++ ] + 0x80;
+					eucBuf[ offset++ ] = 0x8F;
+					eucBuf[ offset++ ] = buf1 + 0x80;
+					eucBuf[ offset++ ] = buf[ i++ ] + 0x80;
 				break;
 			}
 		}
-		return codeBuf.slice( 0, offset );
+		return eucBuf.slice( 0, offset );
 	}
 });
 
@@ -1293,7 +1293,7 @@ jconv.defineEncoding({
 			unknownSjis  = tableSjisInv[ unknown2 ];
 
 		var len     = buf.length,
-			codeBuf = new Buffer( len * 2 ),
+			sjisBuf = new Buffer( len * 2 ),
 			offset  = 0,
 			sequence;
 
@@ -1302,16 +1302,16 @@ jconv.defineEncoding({
 
 			// ASCII
 			if( buf1 < 0x80 ) {
-				codeBuf[ offset++ ] = buf1;
+				sjisBuf[ offset++ ] = buf1;
 			}
 			// HALFWIDTH_KATAKANA
 			else if( buf1 === 0x8E ) {
-				codeBuf[ offset++ ] = buf[ i++ ];
+				sjisBuf[ offset++ ] = buf[ i++ ];
 			}
 			// EXTENSION
 			else if( buf1 === 0x8F ) {
-				codeBuf[ offset++ ] = unknownSjis >> 8;
-				codeBuf[ offset++ ] = unknownSjis & 0xFF;
+				sjisBuf[ offset++ ] = unknownSjis >> 8;
+				sjisBuf[ offset++ ] = unknownSjis & 0xFF;
 				i += 2;
 			}
 			// KANJI
@@ -1351,11 +1351,11 @@ jconv.defineEncoding({
 					buf1 = sjisFixed >> 8;
 					buf2 = sjisFixed & 0xFF;
 				}
-				codeBuf[ offset++ ] = buf1;
-				codeBuf[ offset++ ] = buf2;
+				sjisBuf[ offset++ ] = buf1;
+				sjisBuf[ offset++ ] = buf2;
 			}
 		}
-		return codeBuf.slice( 0, offset );
+		return sjisBuf.slice( 0, offset );
 	}
 });
 
@@ -1365,7 +1365,7 @@ jconv.defineEncoding({
 
 	convert: function( buf ) {
 		var len      = buf.length,
-			codeBuf  = new Buffer( len * 3 + 4 ),
+			jisBuf   = new Buffer( len * 3 + 4 ),
 			offset   = 0,
 			sequence = 0;
 
@@ -1376,54 +1376,54 @@ jconv.defineEncoding({
 			if( buf1 < 0x80 ) {
 				if( sequence !== 0 ) {
 					sequence = 0;
-					codeBuf[ offset++ ] = 0x1B;
-					codeBuf[ offset++ ] = 0x28;
-					codeBuf[ offset++ ] = 0x42;
+					jisBuf[ offset++ ] = 0x1B;
+					jisBuf[ offset++ ] = 0x28;
+					jisBuf[ offset++ ] = 0x42;
 				}
-				codeBuf[ offset++ ] = buf1;
+				jisBuf[ offset++ ] = buf1;
 			}
 			// HALFWIDTH_KATAKANA
 			else if( buf1 === 0x8E ) {
 				if( sequence !== 1 ) {
 					sequence = 1;
-					codeBuf[ offset++ ] = 0x1B;
-					codeBuf[ offset++ ] = 0x28;
-					codeBuf[ offset++ ] = 0x49;
+					jisBuf[ offset++ ] = 0x1B;
+					jisBuf[ offset++ ] = 0x28;
+					jisBuf[ offset++ ] = 0x49;
 				}
-				codeBuf[ offset++ ] = buf[ i++ ] - 0x80;
+				jisBuf[ offset++ ] = buf[ i++ ] - 0x80;
 			}
 			// EXTENSION
 			else if( buf1 === 0x8F ) {
 				if( sequence !== 3 ) {
 					sequence = 3;
-					codeBuf[ offset++ ] = 0x1B;
-					codeBuf[ offset++ ] = 0x24;
-					codeBuf[ offset++ ] = 0x28;
-					codeBuf[ offset++ ] = 0x44;
+					jisBuf[ offset++ ] = 0x1B;
+					jisBuf[ offset++ ] = 0x24;
+					jisBuf[ offset++ ] = 0x28;
+					jisBuf[ offset++ ] = 0x44;
 				}
-				codeBuf[ offset++ ] = buf[ i++ ] - 0x80;
-				codeBuf[ offset++ ] = buf[ i++ ] - 0x80;
+				jisBuf[ offset++ ] = buf[ i++ ] - 0x80;
+				jisBuf[ offset++ ] = buf[ i++ ] - 0x80;
 			}
 			// KANJI
 			else {
 				if( sequence !== 2 ) {
 					sequence = 2;
-					codeBuf[ offset++ ] = 0x1B;
-					codeBuf[ offset++ ] = 0x24;
-					codeBuf[ offset++ ] = 0x42;
+					jisBuf[ offset++ ] = 0x1B;
+					jisBuf[ offset++ ] = 0x24;
+					jisBuf[ offset++ ] = 0x42;
 				}
-				codeBuf[ offset++ ] = buf1 - 0x80;
-				codeBuf[ offset++ ] = buf[ i++ ] - 0x80;
+				jisBuf[ offset++ ] = buf1 - 0x80;
+				jisBuf[ offset++ ] = buf[ i++ ] - 0x80;
 			}
 		}
 
 		// Add ASCII ESC
 		if( sequence !== 0 ) {
 			sequence = 0;
-			codeBuf[ offset++ ] = 0x1B;
-			codeBuf[ offset++ ] = 0x28;
-			codeBuf[ offset++ ] = 0x42;
+			jisBuf[ offset++ ] = 0x1B;
+			jisBuf[ offset++ ] = 0x28;
+			jisBuf[ offset++ ] = 0x42;
 		}
-		return codeBuf.slice( 0, offset );
+		return jisBuf.slice( 0, offset );
 	}
 });
