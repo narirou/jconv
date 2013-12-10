@@ -56,13 +56,13 @@ jconv.convert = function( buf, from, to ) {
 		return encodings[ name ].convert( buf );
 	}
 	else {
-		var uniBuf = encodings[ from + 'toUTF8' ].convert( buf );
-		return encodings[ 'UTF8to' + to ].convert( uniBuf );
+		var uniBuf = encodings[ from + 'toUNICODE' ].convert( buf );
+		return encodings[ 'UNICODEto' + to ].convert( uniBuf );
 	}
 };
 
 jconv.decode = function( buf, from ) {
-	return jconv.convert( buf, from, 'UTF8' ).toString();
+	return jconv.convert( buf, from, 'UNICODE' ).toString( 'UCS2' );
 };
 
 jconv.encode = function( str, to ) {
