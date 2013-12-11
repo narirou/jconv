@@ -1,7 +1,7 @@
 {
   "name": "jconv",
   "description": "Pure JavaScript Iconv for Japanese encodings. (Shift_JIS, ISO-2022-JP, EUC-JP, UTF-8, UCS-2)",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "auther": "narirou <narirou.github@gmail.com>",
   "repository": {
     "type": "git",
