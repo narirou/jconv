@@ -1,8 +1,9 @@
 'use strict';
 
-var fs     = require( 'fs' ),
-	should = require( 'should' ),
-	jconv  = require( __dirname + '/../' );
+var fs       = require( 'fs' ),
+	should   = require( 'should' ),
+	jconv    = require( __dirname + '/../' ),
+	jconvMin = require( __dirname + '/../jconv.min' );
 
 function getBuffer( type, name ) {
 	var filePath = __dirname + '/input/' + type + '/' + name + '.TXT';
@@ -10,10 +11,19 @@ function getBuffer( type, name ) {
 }
 
 function check( type, from, to ) {
+	var toBuf = getBuffer( type, to );
+	var fromBuf = getBuffer( type, from );
+
+	// jconv
 	it( '#' + from + '->' + to, function() {
-		var toBuf = getBuffer( type, to );
-		var fromBuf = getBuffer( type, from );
 		var convertedBuf = jconv.convert( fromBuf, from, to );
+
+		should( convertedBuf ).eql( toBuf );
+	});
+
+	// jconv.min
+	it( '#' + from + '->' + to + '( jconv.min )', function() {
+		var convertedBuf = jconvMin.convert( fromBuf, from, to );
 
 		should( convertedBuf ).eql( toBuf );
 	});
