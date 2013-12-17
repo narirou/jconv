@@ -45,11 +45,11 @@
 			throw new Error( 'Encoding not recognized.' );
 		}
 
+		buf = ensureBuffer( buf );
+
 		if( from === to ) {
 			return buf;
 		}
-
-		buf = ensureBuffer( buf );
 
 		// Directly convert if possible.
 		var name = from + 'to' + to;
@@ -57,13 +57,21 @@
 			return encodings[ name ].convert( buf );
 		}
 		else {
-			var uniBuf = encodings[ from + 'toUNICODE' ].convert( buf );
-			return encodings[ 'UNICODEto' + to ].convert( uniBuf );
+			var uniBuf = encodings[ from + 'toUCS2' ].convert( buf );
+			return encodings[ 'UCS2to' + to ].convert( uniBuf );
 		}
 	};
 
 	jconv.decode = function( buf, from ) {
-		return jconv.convert( buf, from, 'UNICODE' ).toString( 'UCS2' );
+		from = getName( from );
+
+		switch( from ) {
+			case 'UTF8':
+			case 'UCS2':
+				return buf.toString( from );
+			default:
+				return jconv.convert( buf, from, 'UCS2' ).toString( 'UCS2' );
+		}
 	};
 
 	jconv.encode = function( str, to ) {
@@ -98,7 +106,7 @@
 			case 'UCS-2':
 			case 'UTF16LE':
 			case 'UTF-16LE':
-				return 'UNICODE';
+				return 'UCS2';
 			default:
 				return '';
 		}
@@ -154,10 +162,10 @@
 		return offset;
 	}
 
-	// UNICODE = UTF16LE(noBOM)
-	// UNICODE -> UTF8
+	// UCS2 = UTF16LE(no-BOM)
+	// UCS2 -> UTF8
 	jconv.defineEncoding({
-		name: 'UNICODEtoUTF8',
+		name: 'UCS2toUTF8',
 
 		convert: function( buf ) {
 			var setUtf8Buf = setUtf8Buffer;
@@ -171,7 +179,7 @@
 				var buf1 = buf[ i++ ],
 					buf2 = buf[ i++ ];
 
-				unicode = ( ( buf2 & 0xFF ) << 8 ) + buf1;
+				unicode = ( buf2 << 8 ) + buf1;
 
 				offset = setUtf8Buf( unicode, utf8Buf, offset );
 			}
@@ -179,9 +187,9 @@
 		}
 	});
 
-	// UNICODE -> SJIS
+	// UCS2 -> SJIS
 	jconv.defineEncoding({
-		name: 'UNICODEtoSJIS',
+		name: 'UCS2toSJIS',
 
 		convert: function( buf ) {
 			var tableSjisInv = tables[ 'SJISInverted' ],
@@ -196,7 +204,7 @@
 				var buf1 = buf[ i++ ],
 					buf2 = buf[ i++ ];
 
-				unicode = ( ( buf2 & 0xFF ) << 8 ) + buf1;
+				unicode = ( buf2 << 8 ) + buf1;
 
 				// ASCII
 				if( unicode < 0x80 ) {
@@ -217,9 +225,9 @@
 		}
 	});
 
-	// UNICODE -> JIS
+	// UCS2 -> JIS
 	jconv.defineEncoding({
-		name: 'UNICODEtoJIS',
+		name: 'UCS2toJIS',
 
 		convert: function( buf ) {
 			var tableJisInv    = tables[ 'JISInverted' ],
@@ -236,7 +244,7 @@
 				var buf1 = buf[ i++ ],
 					buf2 = buf[ i++ ];
 
-				unicode = ( ( buf2 & 0xFF ) << 8 ) + buf1;
+				unicode = ( buf2 << 8 ) + buf1;
 
 				// ASCII
 				if( unicode < 0x80 ) {
@@ -312,9 +320,9 @@
 		}
 	});
 
-	// UNICODE -> EUCJP
+	// UCS2 -> EUCJP
 	jconv.defineEncoding({
-		name: 'UNICODEtoEUCJP',
+		name: 'UCS2toEUCJP',
 
 		convert: function( buf ) {
 			var tableJisInv    = tables[ 'JISInverted' ],
@@ -331,7 +339,7 @@
 				var buf1 = buf[ i++ ],
 					buf2 = buf[ i++ ];
 
-				unicode = ( ( buf2 & 0xFF ) << 8 ) + buf1;
+				unicode = ( buf2 << 8 ) + buf1;
 
 				// ASCII
 				if( unicode < 0x80 ) {
@@ -369,9 +377,9 @@
 		}
 	});
 
-	// UTF8 -> UNICODE
+	// UTF8 -> UCS2
 	jconv.defineEncoding({
-		name: 'UTF8toUNICODE',
+		name: 'UTF8toUCS2',
 
 		convert: function( buf ) {
 			var setUnicodeBuf = setUnicodeBuffer;
@@ -629,9 +637,9 @@
 		}
 	});
 
-	// SJIS -> UNICODE
+	// SJIS -> UCS2
 	jconv.defineEncoding({
-		name: 'SJIStoUNICODE',
+		name: 'SJIStoUCS2',
 
 		convert: function( buf ) {
 			var tableSjis     = tables[ 'SJIS' ],
@@ -867,9 +875,9 @@
 		}
 	});
 
-	// JIS -> UNICODE
+	// JIS -> UCS2
 	jconv.defineEncoding({
-		name: 'JIStoUNICODE',
+		name: 'JIStoUCS2',
 
 		convert: function( buf ) {
 			var tableJis      = tables[ 'JIS' ],
@@ -1193,9 +1201,9 @@
 		}
 	});
 
-	// EUCJP -> UNICODE
+	// EUCJP -> UCS2
 	jconv.defineEncoding({
-		name: 'EUCJPtoUNICODE',
+		name: 'EUCJPtoUCS2',
 
 		convert: function( buf ) {
 			var tableJis      = tables[ 'JIS' ],
