@@ -1,5 +1,7 @@
 .git*
 .editorconfig
+.travis.yml
+.npmignore
 Gruntfile.*
 generators/*
 test/*
