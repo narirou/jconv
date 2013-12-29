@@ -52,8 +52,8 @@ var buffer = jconv.encode( string, toEncoding );
 
 ## 速度
 node-iconv@2.0.7 との変換速度の比較です。[夏目漱石 こころ](http://www.aozora.gr.jp/cards/000148/files/773_14560.html)
-のテキストを用い、 [Benchmark.js](https://github.com/bestiejs/benchmark.js) にて計測します。  
-環境は *Windows7, core i5 2405-S, mem8G, Node 0.10.22*です。 (詳細は利用する環境で計測してみてください。)  
+のテキストを、 [Benchmark.js](https://github.com/bestiejs/benchmark.js) を利用して変換速度を計測したものになります。  
+環境は *Windows7, core i5 2405-S, mem8G, Node 0.10.22*です。 (利用する環境で計測してみてください。)  
 `グレー`がiconv、`青色`がjconvで、高い方がより高速です。  
 
 ![jconv - encoding speed test chart](./test/chart/speedLog.png)
@@ -62,9 +62,9 @@ node-iconv@2.0.7 との変換速度の比較です。[夏目漱石 こころ](ht
 
 ## エンコードについて
  * Shift_JIS(CP932), ISO-2022-JP(-1), EUC-JP, UTF8, UNICODE(UCS2) の相互変換をサポートしています。   
-   「秀丸エディタ」とほぼ同じ変換を行います。 
+   「秀丸エディタ」とほぼ同じ変換内容になります。 
 
- * Windowsの機種依存文字も変換できます。  
+ * Windowsの機種依存文字を変換できます。  
 [(問題詳細)](http://support.microsoft.com/default.aspx?scid=kb;ja;JP170559)  
 
  * "JIS X 0208"、"JIS X 0212"、"CP932" には、ユニコード変換テーブルに相違点があり、
@@ -78,9 +78,7 @@ node-iconv@2.0.7 との変換速度の比較です。[夏目漱石 こころ](ht
  * [Encoding.js](https://github.com/polygonplanet/Unzipper.js) by polygonplanet.
  * [iconv-js](https://github.com/Hikaru02/iconv-js) by Hikaru02.
  * [node-iconv](https://github.com/bnoordhuis/node-iconv) by bnoordhuis.
- * [libiconv-1.9.1-ja-patch Description](http://www2d.biglobe.ne.jp/~msyk/software/libiconv-1.9.1-patch.html)
+ * [libiconv-1.9.1-ja-patch Description](http://www2d.biglobe.ne.jp/~msyk/software/libiconv-1.9.1-patch.html) by 森山 将之.
 
 ありがとうございます。
 
-## TODO
- * native encoding support

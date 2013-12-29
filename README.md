@@ -109,12 +109,12 @@ node test/speed
  * [Encoding.js](https://github.com/polygonplanet/Unzipper.js) by polygonplanet.
  * [iconv-js](https://github.com/Hikaru02/iconv-js) by Hikaru02.
  * [node-iconv](https://github.com/bnoordhuis/node-iconv) by bnoordhuis.
- * [libiconv-1.9.1-ja-patch Description](http://www2d.biglobe.ne.jp/~msyk/software/libiconv-1.9.1-patch.html)
+ * [libiconv-1.9.1-ja-patch Description](http://www2d.biglobe.ne.jp/~msyk/software/libiconv-1.9.1-patch.html) by 森山 将之.
 
 Thank you so much!
 
 ## Note
 Pull requests are welcome.
 
-## TODO
- * native encoding support
+## Todo
+ * Streaming API support
