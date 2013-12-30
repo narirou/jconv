@@ -332,8 +332,7 @@
 			var len     = buf.length,
 				eucBuf  = new Buffer( len * 2 ),
 				offset  = 0,
-				unicode,
-				sequence;
+				unicode;
 
 			for( var i = 0; i < len; ) {
 				var buf1 = buf[ i++ ],
@@ -580,8 +579,7 @@
 			var len     = buf.length,
 				eucBuf  = new Buffer( len * 2 ),
 				offset  = 0,
-				unicode,
-				sequence;
+				unicode;
 
 			for( var i = 0; i < len; ) {
 				var buf1 = buf[ i++ ];
@@ -1302,8 +1300,7 @@
 
 			var len     = buf.length,
 				sjisBuf = new Buffer( len * 2 ),
-				offset  = 0,
-				sequence;
+				offset  = 0;
 
 			for( var i = 0; i < len; ) {
 				var buf1 = buf[ i++ ];
