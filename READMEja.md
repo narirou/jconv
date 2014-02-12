@@ -11,8 +11,8 @@ jconv
  * [node-iconv](https://github.com/bnoordhuis/node-iconv)よりも高速に変換を行います。
 
 ## インストール
-```
-npm install jconv
+```bash
+$ npm install jconv
 ```
 
 ## 使い方
@@ -27,9 +27,9 @@ var SJISBuffer = jconv.convert( EUCJPBuffer, 'EUCJP', 'SJIS' );
 **iconv-lite** 形式のAPIも利用可能です。
 
 ```javascript
-var string = jconv.decode( buffer, fromEncoding );
+var str = jconv.decode( buffer, fromEncoding );
 
-var buffer = jconv.encode( string, toEncoding );
+var buf = jconv.encode( 'string', toEncoding );
 ```
 
 ## API
@@ -69,8 +69,8 @@ node-iconv@2.0.7 との変換速度の比較です。[夏目漱石 こころ](ht
 
  * "JIS X 0208"、"JIS X 0212"、"CP932" には、ユニコード変換テーブルに相違点があり、
    いくつかの特殊な文字 ( ～￠￡∥ など ) では、デフォルトで相互変換を行うことが出来ません。  
-   このモジュールでは、テーブルの修正を行い相互変換できるようにしていますが、
-   定義に厳格な変換を行いたい場合は、 node-iconv に libiconv の日本語用修正パッチを当てたモジュールを用いることが推奨されます。  
+   このモジュールではテーブルの修正を行うことで相互変換できるようにしていますが、
+   定義に厳格な変換を行いたい場合は、 node-iconv に libiconv の日本語用修正パッチを当てたモジュールを使用してください。  
 [(問題詳細)](http://www8.plala.or.jp/tkubota1/unicode-symbols-map2.html)  
 
 ## 参考
@@ -82,3 +82,8 @@ node-iconv@2.0.7 との変換速度の比較です。[夏目漱石 こころ](ht
 
 ありがとうございます。
 
+## Note
+Pull requests are welcome.
+
+## Todo
+ * Streaming API support

@@ -6,16 +6,16 @@ jconv
 [![Build Status](https://secure.travis-ci.org/narirou/jconv.png?branch=master)](https://travis-ci.org/narirou/jconv)
 [![NPM version](https://badge.fury.io/js/jconv.png)](http://badge.fury.io/js/jconv)
 
- * This module supported the encoding commonly used in Japanese Language:  
+ * This module supported the encodings commonly used in Japanese Language:  
    *Shift_JIS(CP932), ISO-2022-JP(-1), EUC-JP, UTF8, UNICODE(UCS2)* conversion.
  * Pure Javascript, no need to compile.
  * Much faster than [node-iconv](https://github.com/bnoordhuis/node-iconv).
 
 [[Japanese 日本語]](https://github.com/narirou/jconv/blob/master/READMEja.md)
 
-## Install
-```
-npm install jconv
+## Installation
+```bash
+$ npm install jconv
 ```
 
 ## Usage
@@ -30,9 +30,9 @@ var SJISBuffer = jconv.convert( EUCJPBuffer, 'EUCJP', 'SJIS' );
 Also available **iconv-lite** syntax:
 
 ```javascript
-var string = jconv.decode( buffer, fromEncoding );
+var str = jconv.decode( buffer, fromEncoding );
 
-var buffer = jconv.encode( string, toEncoding );
+var buf = jconv.encode( 'string', toEncoding );
 ```
 
 ## API
@@ -52,7 +52,7 @@ var buffer = jconv.encode( string, toEncoding );
  * **jconv.encodingExists( encodingName )**  
     * `return` {Boolean}
 
-## Speed
+## Performance
 Comparison with node-iconv@2.0.7 by converting [Japanese text](http://www.aozora.gr.jp/cards/000148/files/773_14560.html)
 using [Benchmark.js](https://github.com/bestiejs/benchmark.js).  
 Environment is *Windows7, core i5 2405-S, mem8G, Node 0.10.22*.
@@ -118,3 +118,4 @@ Pull requests are welcome.
 
 ## Todo
  * Streaming API support
+ * Support more encodings and languages.
