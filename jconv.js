@@ -24,16 +24,15 @@
 
 	var encodings = {};
 
-	var Encoding = function( obj ) {
-		this.name = obj.name;
-		this.convert = obj.convert;
-	};
-
 	var jconv = module.exports = function( buf, from, to ) {
 		return jconv.convert( buf, from, to );
 	};
 
 	jconv.defineEncoding = function( obj ) {
+		var Encoding = function( obj ) {
+			this.name = obj.name;
+			this.convert = obj.convert;
+		};
 		encodings[ obj.name ] = new Encoding( obj );
 	};
 
@@ -52,22 +51,35 @@
 		}
 
 		// Directly convert if possible.
-		var name = from + 'to' + to;
-		if( encodings[ name ] ) {
-			return encodings[ name ].convert( buf );
+		var encoder = encodings[ from + 'to' + to ];
+		if( encoder ) {
+			return encoder.convert( buf );
+		}
+
+		var uniDecoder = encodings[ from + 'toUCS2' ],
+			uniEncoder = encodings[ 'UCS2to' + to ];
+		if( uniDecoder && uniEncoder ) {
+			return uniEncoder.convert( uniDecoder.convert( buf ) );
 		}
 		else {
-			var uniBuf = encodings[ from + 'toUCS2' ].convert( buf );
-			return encodings[ 'UCS2to' + to ].convert( uniBuf );
+			throw new Error( 'Encoding not recognized.' );
 		}
 	};
 
 	jconv.decode = function( buf, from ) {
-		from = getName( from );
-
-		switch( from ) {
+		switch( from.toUpperCase() ) {
+			// Internal Encoding
+			case 'BINARY':
+			case 'BASE64':
+			case 'ASCII':
+			case 'HEX':
 			case 'UTF8':
+			case 'UTF-8':
+			case 'UNICODE':
 			case 'UCS2':
+			case 'UCS-2':
+			case 'UTF16LE':
+			case 'UTF-16LE':
 				return buf.toString( from );
 			default:
 				return jconv.convert( buf, from, 'UCS2' ).toString( 'UCS2' );
@@ -75,7 +87,17 @@
 	};
 
 	jconv.encode = function( str, to ) {
-		return jconv.convert( str, 'UTF8', to );
+		switch( to.toUpperCase() ) {
+			// Internal Encoding
+			case 'BASE64':
+			case 'ASCII':
+			case 'HEX':
+			case 'UTF8':
+			case 'UTF-8':
+				return new Buffer( str, to );
+			default:
+				return jconv.convert( str, 'UTF8', to );
+		}
 	};
 
 	jconv.encodingExists = function( encoding ) {
@@ -315,7 +337,6 @@
 				jisBuf[ offset++ ] = 0x28;
 				jisBuf[ offset++ ] = 0x42;
 			}
-
 			return	jisBuf.slice( 0, offset );
 		}
 	});
