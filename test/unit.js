@@ -31,22 +31,22 @@ function check( type, from, to ) {
 
 // jconv.encodingExists
 describe( 'jconv.encodingExists', function() {
-	it( '# exist', function() {
-		var enc = jconv.encodingExists( 'UTF8' );
+	it( '# exists', function() {
+		var result = jconv.encodingExists( 'UTF8' );
 
-		should( enc ).eql( true );
+		should( result ).eql( true );
 	});
 
 	it( '# not exists', function() {
-		var enc = jconv.encodingExists( 'BIG5' );
+		var result = jconv.encodingExists( 'BIG5' );
 
-		should( enc ).eql( false );
+		should( result ).eql( false );
 	});
 
 	it( '# not exists', function() {
-		var enc = jconv.encodingExists( '' );
+		var result = jconv.encodingExists( '' );
 
-		should( enc ).eql( false );
+		should( result ).eql( false );
 	});
 });
 
