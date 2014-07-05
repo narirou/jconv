@@ -1,21 +1,29 @@
 jconv
-====================
+=====
 
 > Pure JavaScript Iconv for Japanese encodings.
 
-[![Build Status](https://secure.travis-ci.org/narirou/jconv.png?branch=master)](https://travis-ci.org/narirou/jconv)
-[![NPM version](https://badge.fury.io/js/jconv.png)](http://badge.fury.io/js/jconv)
+[![Build Status](http://img.shields.io/travis/narirou/jconv/master.svg?style=flat)](https://travis-ci.org/narirou/jconv)
+[![NPM version](http://img.shields.io/npm/v/jconv.svg?style=flat)](http://badge.fury.io/js/jconv)
+[![MIT Licensed](http://img.shields.io/badge/license-MIT-blue.svg?style=flat)](http://opensource.org/licenses/MIT)
+
 
  * *Shift_JIS(CP932)、ISO-2022-JP(-1)、EUC-JP、UTF8、UNICODE* の相互変換を行うモジュールです。
  * JavaScriptのみで書かれているため、コンパイルは必要ありません。
  * [node-iconv](https://github.com/bnoordhuis/node-iconv)よりも高速に変換を行います。
 
-## インストール
+
+
+インストール
+----
 ```bash
 $ npm install jconv
 ```
 
-## 使い方
+
+
+使い方
+----
 **EUC-JP** から **Shift_JIS** に変換したい場合は、次のようにします。
 
 ```javascript
@@ -32,7 +40,10 @@ var str = jconv.decode( buffer, fromEncoding );
 var buf = jconv.encode( 'string', toEncoding );
 ```
 
-## API
+
+
+API
+----
  * **jconv( input, fromEncoding, toEncoding )**  
  * **jconv.convert( input, fromEncoding, toEncoding )**  
     * `input` {Buffer} または {String}  
@@ -50,7 +61,10 @@ var buf = jconv.encode( 'string', toEncoding );
  * **jconv.encodingExists( encodingName )**  
     * `return` {Boolean}
 
-## 速度
+
+
+速度
+----
 node-iconv@2.0.7 との変換速度の比較です。[夏目漱石 こころ](http://www.aozora.gr.jp/cards/000148/files/773_14560.html)
 のテキストを、 [Benchmark.js](https://github.com/bestiejs/benchmark.js) を利用して変換速度を計測したものになります。  
 環境は *Windows7, core i5 2405-S, mem8G, Node 0.10.22*です。 (利用する環境で計測してみてください。)  
@@ -60,7 +74,10 @@ node-iconv@2.0.7 との変換速度の比較です。[夏目漱石 こころ](ht
 [[latest log]](./test/chart/speedLog.txt)  
 <!-- https://raw.github.com/narirou/jconv/master/ -->
 
-## エンコードについて
+
+
+エンコードについて
+-----------
  * Shift_JIS(CP932), ISO-2022-JP(-1), EUC-JP, UTF8, UNICODE(UCS2) の相互変換をサポートしています。   
    「秀丸エディタ」とほぼ同じ変換内容になります。 
 
@@ -73,7 +90,10 @@ node-iconv@2.0.7 との変換速度の比較です。[夏目漱石 こころ](ht
    定義に厳格な変換を行いたい場合は、 node-iconv に libiconv の日本語用修正パッチを当てたモジュールを使用してください。  
 [(問題詳細)](http://www8.plala.or.jp/tkubota1/unicode-symbols-map2.html)  
 
-## 参考
+
+
+参考
+----
  * [iconv-lite](https://github.com/ashtuchkin/iconv-lite) by ashtuchkin.
  * [Encoding.js](https://github.com/polygonplanet/Unzipper.js) by polygonplanet.
  * [iconv-js](https://github.com/Hikaru02/iconv-js) by Hikaru02.
@@ -82,8 +102,14 @@ node-iconv@2.0.7 との変換速度の比較です。[夏目漱石 こころ](ht
 
 ありがとうございます。
 
-## Note
+
+
+Note
+----
 Pull requests are welcome.
 
-## Todo
+
+
+Todo
+----
  * Streaming API support

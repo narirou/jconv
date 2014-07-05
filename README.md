@@ -1,10 +1,12 @@
 jconv
-====================
+=====
 
 > Pure JavaScript Iconv for Japanese encodings.
 
-[![Build Status](https://secure.travis-ci.org/narirou/jconv.png?branch=master)](https://travis-ci.org/narirou/jconv)
-[![NPM version](https://badge.fury.io/js/jconv.png)](http://badge.fury.io/js/jconv)
+[![Build Status](http://img.shields.io/travis/narirou/jconv/master.svg?style=flat)](https://travis-ci.org/narirou/jconv)
+[![NPM version](http://img.shields.io/npm/v/jconv.svg?style=flat)](http://badge.fury.io/js/jconv)
+[![MIT Licensed](http://img.shields.io/badge/license-MIT-blue.svg?style=flat)](http://opensource.org/licenses/MIT)
+
 
  * This module supported the encodings commonly used in Japanese Language:  
    *Shift_JIS(CP932), ISO-2022-JP(-1), EUC-JP, UTF8, UNICODE(UCS2)* conversion.
@@ -13,12 +15,18 @@ jconv
 
 [[Japanese 日本語]](https://github.com/narirou/jconv/blob/master/READMEja.md)
 
-## Installation
+
+
+Installation
+----
 ```bash
 $ npm install jconv
 ```
 
-## Usage
+
+
+Usage
+----
 For example simply convert from **EUC-JP** to **Shift_JIS**:
 
 ```javascript
@@ -35,7 +43,8 @@ var str = jconv.decode( buffer, fromEncoding );
 var buf = jconv.encode( 'string', toEncoding );
 ```
 
-## API
+API
+----
  * **jconv( input, fromEncoding, toEncoding )**  
  * **jconv.convert( input, fromEncoding, toEncoding )**  
     * `input` {Buffer} or {String}  
@@ -52,7 +61,8 @@ var buf = jconv.encode( 'string', toEncoding );
  * **jconv.encodingExists( encodingName )**  
     * `return` {Boolean}
 
-## Performance
+Performance
+----
 Comparison with node-iconv@2.0.7 by converting [Japanese text](http://www.aozora.gr.jp/cards/000148/files/773_14560.html)
 using [Benchmark.js](https://github.com/bestiejs/benchmark.js).  
 Environment is *Windows7, core i5 2405-S, mem8G, Node 0.10.22*.
@@ -62,7 +72,10 @@ Environment is *Windows7, core i5 2405-S, mem8G, Node 0.10.22*.
 ![jconv - encoding speed test chart](https://raw.github.com/narirou/jconv/master/test/chart/speedLog.png)
 [[latest log]](https://github.com/narirou/jconv/blob/master/test/chart/speedLog.txt)  
 
-## Encodings
+
+
+Encodings
+---------
  * Supported: Shift_JIS(CP932), ISO-2022-JP(-1), EUC-JP, UTF8, UNICODE(UCS2).  
  
  * Supported Windows Dependent Characters <-> JIS Conversion.  
@@ -73,7 +86,10 @@ Environment is *Windows7, core i5 2405-S, mem8G, Node 0.10.22*.
  This module corrects this difference as much as possible when converting.  
 [(problem details)](http://www8.plala.or.jp/tkubota1/unicode-symbols-map2.html)  
 
-## Development 
+
+
+Development 
+-----------
  * Clone Repository  
 ```
 git clone https://github.com/narirou/jconv.git  
@@ -98,13 +114,16 @@ grunt test
 # First, minify the script by closure-compiler.
 grunt minify
 ```
-``` 
+```
 node test/speed  
 # This results are visualized by chart.js.  
 # Plese open "chart/index.html".
 ```
 
-## Based on
+
+
+Based on
+--------
  * [iconv-lite](https://github.com/ashtuchkin/iconv-lite) by ashtuchkin.
  * [Encoding.js](https://github.com/polygonplanet/Unzipper.js) by polygonplanet.
  * [iconv-js](https://github.com/Hikaru02/iconv-js) by Hikaru02.
@@ -113,9 +132,15 @@ node test/speed
 
 Thank you so much!
 
-## Note
+
+
+Note
+----
 Pull requests are welcome.
 
-## Todo
+
+
+Todo
+----
  * Streaming API support
  * Support more encodings and languages.
