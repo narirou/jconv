@@ -26,8 +26,9 @@
     "benchmark": "^1.0.0",
     "grunt": "^0.4.5",
     "grunt-closurecompiler": "^0.9.9",
-    "grunt-mocha-test": "^0.11.0",
+    "grunt-mocha-test": "^0.12.1",
     "iconv": "^2.1.4",
+    "mocha": "^1.21.4",
     "should": "^4.0.0"
   },
   "readmeFilename": "README.md",
