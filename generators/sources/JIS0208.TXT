@@ -6,9 +6,7 @@
 # http://www.mail-archive.com/unicode@unicode.org/msg05222.html
 #
 # Moddified:
-# REVERSE SOLIDUS -> FULLWIDTH REVERSE SOLIDUS
 # DOUBLE VERTICAL LINE -> PARALLEL TO
-# WAVE DASH -> FULLWIDTH TILDE
 # MINUS SIGN -> FULLWIDTH HYPHEN-MINUS
 #
 

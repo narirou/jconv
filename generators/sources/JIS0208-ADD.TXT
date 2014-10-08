@@ -4,7 +4,7 @@
 #
 # http://www8.plala.or.jp/tkubota1/unicode-symbols-map2.html
 #
-# JIS <-> UNICODE
+# JIS	UNICODE
 #
 
 0x2140	U+FF3C	# FULLWIDTH REVERSE SOLIDUS
