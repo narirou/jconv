@@ -1,0 +1,29 @@
+# Project Files
+test/converted/
+
+# Tools
+*.sublime-workspace
+*.sublime-project
+
+# Node
+node_modules
+
+# Coverages
+.coveralls.yml
+coverage
+
+# Logs
+*.log
+
+# OS Generated Files
+*.DS_Store
+*.DS_Store?
+*._
+*.Spotlight-V100
+*.Trashes
+ehthumbs.db
+Thumbs.db
+Desktop.ini
+
+# Junc Copy Files
+*コピー*

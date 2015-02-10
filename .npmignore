@@ -1,7 +1,10 @@
-.git*
-.editorconfig
-.travis.yml
-.npmignore
+*.log
+*.editorconfig
+*.yml
+*.npmignore
+*.jshintrc
+*.sublime-project
+*.sublime-workspace
 Gruntfile.*
-generators/*
-test/*
+test/
+coverage/
