@@ -3,9 +3,16 @@ jconv
 
 > Pure JavaScript Iconv for Japanese encodings.
 
-[![Build Status](http://img.shields.io/travis/narirou/jconv/master.svg?style=flat)](https://travis-ci.org/narirou/jconv)
-[![NPM version](http://img.shields.io/npm/v/jconv.svg?style=flat)](http://badge.fury.io/js/jconv)
-[![MIT Licensed](http://img.shields.io/badge/license-MIT-blue.svg?style=flat)](http://opensource.org/licenses/MIT)
+[![Build Status][travis-image]][travis-url]
+[![Npm Modules][npm-image]][npm-url]
+[![MIT Licensed][license-image]][license-url]
+
+[travis-image]: https://img.shields.io/travis/narirou/jconv.svg?style=flat-square
+[travis-url]: https://travis-ci.org/narirou/jconv
+[npm-image]: http://img.shields.io/npm/v/jconv.svg?style=flat-square
+[npm-url]: https://www.npmjs.org/package/jconv
+[license-image]: http://img.shields.io/badge/license-MIT-blue.svg?style=flat-square
+[license-url]: http://opensource.org/licenses/MIT
 
 
  * This module supported the encodings commonly used in Japanese Language:  
@@ -18,7 +25,8 @@ jconv
 
 
 Installation
-----
+------------
+
 ```bash
 $ npm install jconv
 ```
@@ -26,7 +34,8 @@ $ npm install jconv
 
 
 Usage
-----
+-----
+
 For example simply convert from **EUC-JP** to **Shift_JIS**:
 
 ```javascript
@@ -43,8 +52,11 @@ var str = jconv.decode( buffer, fromEncoding );
 var buf = jconv.encode( 'string', toEncoding );
 ```
 
+
+
 API
-----
+---
+
  * **jconv( input, fromEncoding, toEncoding )**  
  * **jconv.convert( input, fromEncoding, toEncoding )**  
     * `input` {Buffer} or {String}  
@@ -61,8 +73,11 @@ API
  * **jconv.encodingExists( encodingName )**  
     * `return` {Boolean}
 
+
+
 Performance
-----
+-----------
+
 Comparison with node-iconv@2.0.7 by converting [Japanese text](http://www.aozora.gr.jp/cards/000148/files/773_14560.html)
 using [Benchmark.js](https://github.com/bestiejs/benchmark.js).  
 Environment is *Windows7, core i5 2405-S, mem8G, Node 0.10.22*.
@@ -76,6 +91,7 @@ Environment is *Windows7, core i5 2405-S, mem8G, Node 0.10.22*.
 
 Encodings
 ---------
+
  * Supported: Shift_JIS(CP932), ISO-2022-JP(-1), EUC-JP, UTF8, UNICODE(UCS2).  
  
  * Supported Windows Dependent Characters <-> JIS Conversion.  
@@ -90,6 +106,7 @@ Encodings
 
 Development 
 -----------
+
  * Clone Repository  
 ```
 git clone https://github.com/narirou/jconv.git  
@@ -124,6 +141,7 @@ node test/speed
 
 Based on
 --------
+
  * [iconv-lite](https://github.com/ashtuchkin/iconv-lite) by ashtuchkin.
  * [Encoding.js](https://github.com/polygonplanet/Unzipper.js) by polygonplanet.
  * [iconv-js](https://github.com/Hikaru02/iconv-js) by Hikaru02.
@@ -136,11 +154,14 @@ Thank you so much!
 
 Note
 ----
+
 Pull requests are welcome.
 
 
 
 Todo
 ----
+
  * Streaming API support
  * Support more encodings and languages.
+ * Cleanup the code and more speed.
