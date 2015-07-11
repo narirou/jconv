@@ -15,7 +15,7 @@ jconv
 [license-url]: http://opensource.org/licenses/MIT
 
 
- * This module supported the encodings commonly used in Japanese Language:  
+ * This module supports the encodings commonly used in the Japanese Language:  
    *Shift_JIS(CP932), ISO-2022-JP(-1), EUC-JP, UTF8, UNICODE(UCS2)* conversion.
  * Pure Javascript, no need to compile.
  * Much faster than [node-iconv](https://github.com/bnoordhuis/node-iconv).
